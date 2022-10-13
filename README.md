@@ -16,10 +16,25 @@ A piece can chain captures together (Chain Jump)
 If a piece can capture an opponet's piece, it MUST capture it, no other normally move
 
 # WireFrame
+
 ```
 Create player pieces
 Create 64 space board (32 dark, 32 light)
 Create reset board button
+
+boardArray = [
+    [-1, -1,-1 ,-1, -1, -1, -1, -1 ]
+    [-1, -1,-1 ,-1, -1, -1, -1, -1 ]
+    [-1, -1,-1 ,-1, -1, -1, -1, -1 ]
+    [-1, -1,-1 ,-1, -1, -1, -1, -1 ]
+    [-1, -1,-1 ,-1, -1, -1, -1, -1 ]
+    [-1, -1,-1 ,-1, -1, -1, -1, -1 ]
+    [-1, -1,-1 ,-1, -1, -1, -1, -1 ]
+    [-1, -1,-1 ,-1, -1, -1, -1, -1 ]
+]
+If boardArray[row][col] == -1, spot is empty
+If boardArray[row][col] == 0, player1 (light) has a piece there
+If boardArray[row][col] == 1, player2 (dark) has a piece there
 
 ternary for player turn
 
@@ -32,6 +47,7 @@ function for piece move
         - end the player's turn
     - If there is a capture available for a piece then:
         - show players that there is a forced capture for that specific piece(s)
+        - when a piece is captured, remove it from the board
         - if there are multiple different captures from different pieces, only allow one piece to be able to capture
         - if there is a chain capture, continue turn until all chain captures are executed
         - then end the player's turn
@@ -50,6 +66,11 @@ function for making a Piece a King
     - check if a piece moves, and then is in the last row of their opponents, then make that piece a King
 
 function for resetting Game
-    - if a player wins or 
+    - if a player wins or hits reset Button
+        -update player win counter for player who won
+        -move all pieces back to starting positions
+        -reset starting boardArray
+        -reset player going first
+        -set pieces take counter to 0
 ```
 
