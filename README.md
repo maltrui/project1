@@ -16,6 +16,7 @@ A piece can chain captures together (Chain Jump)
 If a piece can capture an opponet's piece, it MUST capture it, no other normally move
 
 # WireFrame
+![Checkerboard Wireframe](/img/checkerboard.png)
 ```CSS/HTML
 Squares are red and black
 Pieces are red and black
