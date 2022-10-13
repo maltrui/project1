@@ -16,11 +16,28 @@ A piece can chain captures together (Chain Jump)
 If a piece can capture an opponet's piece, it MUST capture it, no other normally move
 
 # WireFrame
+```CSS/HTML
+Squares are red and black
+Pieces are red and black
+Outline of piece to let players know about capture posibility
+
+How many wins for Light Player and Dark Player
+How many pieces have been captured
+Button for reset
+Who's turn is (light or dark)
+Winner announcement
+    - Win by taking all opponent's pieces
+    - Win by opponent having no legal moves
 
 ```
+
+```js
 Create player pieces
 Create 64 space board (32 dark, 32 light)
 Create reset board button
+
+capturedLightPieces = 0
+capturedDarkPieces
 
 boardArray = [
     [-1, -1,-1 ,-1, -1, -1, -1, -1 ]
@@ -32,6 +49,7 @@ boardArray = [
     [-1, -1,-1 ,-1, -1, -1, -1, -1 ]
     [-1, -1,-1 ,-1, -1, -1, -1, -1 ]
 ]
+8 by 8 (so there are 64 squares)
 If boardArray[row][col] == -1, spot is empty
 If boardArray[row][col] == 0, player1 (light) has a piece there
 If boardArray[row][col] == 1, player2 (dark) has a piece there
