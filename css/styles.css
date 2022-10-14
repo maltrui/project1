@@ -1,22 +1,37 @@
+*{
+    box-sizing: border-box;
+}
 body{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 75px 1fr  1fr;
+    grid-template-columns: 1fr 300px 1fr;
+    grid-template-rows: 75px 300px  1fr;
 }
+#turnTitles{
+    display: flex;
+    grid-column: 2/3;
+}
+#playerTurnTitle, #playerTurn{
+    display: flex;
+    margin-left: 5px;
+}
+
 #board{
     display: grid;
-
+    grid-row: 2/3;
+    grid-column: 2 / 3;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 .row1{
     display: flex;
-
 }
 .row2{
     display: flex;
 }
 .row3{
+    display: flex;
+}
+.row4{
     display: flex;
 }
 .black{
