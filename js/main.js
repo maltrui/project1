@@ -2,6 +2,7 @@
 const board = document.getElementById('board')
 let moveChipPart1 = true
 let moveChipPart2 = false
+let spaceOpen = false
 let selectedChip = ''
 let selectedChipRow = ''
 let selectedChipColumn = ''
@@ -23,34 +24,43 @@ const boardArray = [
 //functions
 const movePiecePart1 = function(event){
     if (moveChipPart1 == true){
-        moveChipPart1 = false
-        moveChipPart2 = true
-
-        console.log(boardArray[parseInt(event.target.parentNode.id.slice(0,1))][parseInt(event.target.parentNode.id.slice(-1))])
         selectedChipRow = parseInt(event.target.parentNode.id.slice(0,1))-1
         selectedChipColumn = parseInt(event.target.parentNode.id.slice(-1))-1
-        selectedChip = event.target
-        console.log(selectedChipRow)
-        console.log(selectedChipColumn)
-        console.log(parseInt(event.target.parentNode.id.slice(-1)))
-
+        checkOpenSpaceNotKing(selectedChipRow, selectedChipColumn)
+        if (spaceOpen == true){
+            moveChipPart1 = false
+            moveChipPart2 = true
+            selectedChip = event.target
+        }
     }
 }
 
 const movePiecePart2 = function(event){
-    if (moveChipPart2 == true){
+    if (moveChipPart2 == true && spaceOpen == true){
         movedToSpaceRow = parseInt(event.target.id.slice(0,1)) - 1
         movedToSpaceColumn = parseInt(event.target.id.slice(-1)) - 1
         boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
-        if(selectedChip.classList.contains('redChip')){
+        // black pieces wont move
+        if(selectedChip.classList.contains('redChip') && boardArray[movedToSpaceRow][movedToSpaceColumn]==0){
             boardArray[movedToSpaceRow].splice(movedToSpaceColumn,1 ,-1)
-        } else {
+            event.target.appendChild(selectedChip)
+            spaceOpen = false
+            moveChipPart1 = true
+            moveChipPart2 = false
+        } else if (boardArray[movedToSpaceRow][movedToSpaceColumn]==0){
             boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, 1)
+            event.target.appendChild(selectedChip)
+            spaceOpen = false
+            moveChipPart1 = true
+            moveChipPart2 = false
         }
         console.log(boardArray)
-        event.target.appendChild(selectedChip)
-        moveChipPart1 = true
-        moveChipPart2 = false
+    }
+}
+
+const checkOpenSpaceNotKing = function(movedToSpaceRow, movedToSpaceColumn){
+    if(boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] == 0 || boardArray[movedToSpaceRow-1][movedToSpaceColumn+1] == 0){
+        spaceOpen = true
     }
 }
 
