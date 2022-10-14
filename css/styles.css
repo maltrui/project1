@@ -4,7 +4,7 @@
 body{
     display: grid;
     grid-template-columns: 100px 300px 1fr;
-    grid-template-rows: 75px 300px  1fr;
+    grid-template-rows: 75px 300px 25px 1fr;
 }
 #turnTitles{
     display: flex;
@@ -18,7 +18,7 @@ body{
 #board{
     display: grid;
     grid-row: 2/3;
-    grid-column: 2 / 3;
+    grid-column: 2/3;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
@@ -50,10 +50,85 @@ body{
 #capturedBlackPieces, #numOfCapturedBlack{
     display: flex;
     justify-content: start;
+    margin-left: 5px;
     grid-row: 1/2;
 }
 #capturedRedPieces, #numOfCapturedRed{
     display: flex;
     justify-content: start;
+    margin-left: 5px;
     grid-row: 3/4;
+}
+button{
+    display: flex;
+    grid-row: 3/4;
+    grid-column: 2/3;
+    justify-self: end;
+    margin: 5px;
+    width: 50px;
+    height: 20px;
+}
+#playerWinsTitles{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-row: 4/5;
+    grid-column: 2/3;
+}
+#blackWins, #numOfBlackWins{
+    display: flex;
+    grid-column: 1/2;
+}
+#redWins, #numOfRedWins{
+    display: flex;
+    grid-column: 3/4;
+}
+#redWins{
+    grid-row: 1;
+}
+#numOfRedWins{
+    grid-row: 2;
+}
+.redChip{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    background-color: darkred;
+    margin-left: 4px;
+    margin-top: 2px;
+    border-radius: 50px;
+    border-style: solid;
+    border-width: 1px;;
+    border-color: white;
+    color: white;
+    width: 30px;
+    height: 30px;
+}
+.blackChip{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    background-color: rgb(16,12,8);
+    margin-left: 4px;
+    margin-top: 2px;
+    border-radius: 50px;
+    border-style: solid;
+    border-width: 1px;;
+    border-color: white;
+    color: white;
+    width: 30px;
+    height: 30px;
+}
+.nonRedKing{
+    color: darkred;
+}
+.nonBlackKing{
+    color: rgb(16,12,8);
+}
+.redking{
+    color: white;
+}
+
+.blackking{
+    color: white;
 }
