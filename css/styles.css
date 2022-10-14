@@ -1,0 +1,27 @@
+body{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 75px 1fr  1fr;
+}
+#board{
+    display: grid;
+
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+.row1{
+    display: flex;
+
+}
+.row2{
+    display: flex;
+}
+.row3{
+    display: flex;
+}
+.black{
+    background-color: black;
+}
+.red{
+    background-color: red;
+}
