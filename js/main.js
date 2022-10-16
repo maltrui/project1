@@ -26,7 +26,12 @@ const movePiecePart1 = function(event){
     if (moveChipPart1 == true){
         selectedChipRow = parseInt(event.target.parentNode.id.slice(0,1))-1
         selectedChipColumn = parseInt(event.target.parentNode.id.slice(-1))-1
-        checkOpenSpaceNotKing(selectedChipRow, selectedChipColumn)
+        if (event.target.classList.contains('redChip')){
+            checkOpenSpaceNotKingRed(selectedChipRow, selectedChipColumn)
+        }
+        if (event.target.classList.contains('blackChip')){
+            checkOpenSpaceNotKingBlack(selectedChipRow, selectedChipColumn)
+        }
         if (spaceOpen == true){
             moveChipPart1 = false
             moveChipPart2 = true
@@ -40,7 +45,7 @@ const movePiecePart2 = function(event){
         movedToSpaceRow = parseInt(event.target.id.slice(0,1)) - 1
         movedToSpaceColumn = parseInt(event.target.id.slice(-1)) - 1
         boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
-        // black pieces wont move
+  
         if(selectedChip.classList.contains('redChip') && boardArray[movedToSpaceRow][movedToSpaceColumn]==0){
             boardArray[movedToSpaceRow].splice(movedToSpaceColumn,1 ,-1)
             event.target.appendChild(selectedChip)
@@ -58,10 +63,17 @@ const movePiecePart2 = function(event){
     }
 }
 
-const checkOpenSpaceNotKing = function(movedToSpaceRow, movedToSpaceColumn){
+const checkOpenSpaceNotKingRed = function(movedToSpaceRow, movedToSpaceColumn){
     if(boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] == 0 || boardArray[movedToSpaceRow-1][movedToSpaceColumn+1] == 0){
         spaceOpen = true
     }
+
+}
+const checkOpenSpaceNotKingBlack = function(movedToSpaceRow, movedToSpaceColumn){
+    if(boardArray[movedToSpaceRow+1][movedToSpaceColumn-1] == 0 || boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] == 0){
+        spaceOpen = true
+    }
+
 }
 
 //event listeners
