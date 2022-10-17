@@ -35,12 +35,8 @@ const changeTurn = function(currentPlayerTurn){
 }
 
 const moveRedPiecePart1 = function(event){
-    console.log(changeTurn)
-    console.log(currentPlayerTurn)
     if(changeTurn(currentPlayerTurn) == false){
-        console.log('getting here')
         if (moveRedChipPart1 == true){
-            console.log('clicked')
             selectedChipRow = parseInt(event.target.parentNode.id.slice(0,1))-1
             selectedChipColumn = parseInt(event.target.parentNode.id.slice(-1))-1
             if (event.target.classList.contains('redChip')){
@@ -73,41 +69,53 @@ const moveBlackPiecePart1 = function(event){
 }
 
 const moveRedPiecePart2 = function(event){
-    console.log(moveRedChipPart2)
-    console.log(spaceOpen)
     if (moveRedChipPart2 == true && spaceOpen == true){
         movedToSpaceRow = parseInt(event.target.id.slice(0,1)) - 1
         movedToSpaceColumn = parseInt(event.target.id.slice(-1)) - 1
-        boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
-        if(selectedChip.classList.contains('redChip') && boardArray[movedToSpaceRow][movedToSpaceColumn]==0){
-            boardArray[movedToSpaceRow].splice(movedToSpaceColumn,1 ,-1)
-            event.target.appendChild(selectedChip)
-            spaceOpen = false
-            moveBlackChipPart1 = true
-            moveRedChipPart2 = false
-            currentPlayerTurn = 'black'
-        } 
-        console.log(boardArray)
-        
+        if((selectedChipRow-1 == movedToSpaceRow && selectedChipColumn-1 == movedToSpaceColumn) || (selectedChipRow-1 == movedToSpaceRow && selectedChipColumn+1 == movedToSpaceColumn)){
+            if(selectedChip.classList.contains('redChip') && boardArray[movedToSpaceRow][movedToSpaceColumn]==0){
+                boardArray[movedToSpaceRow].splice(movedToSpaceColumn,1 ,-1)
+                boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
+                event.target.appendChild(selectedChip)
+                spaceOpen = false
+                moveBlackChipPart1 = true
+                moveRedChipPart2 = false
+                currentPlayerTurn = 'black'
+            } else if (boardArray[movedToSpaceRow][movedToSpaceColumn]==0){
+                boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, 1)
+                boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
+                event.target.appendChild(selectedChip)
+                spaceOpen = false
+                moveBlackChipPart1 = true
+                moveRedChipPart2 = false
+                currentPlayerTurn = 'black'
+            }
+        }  
     }
 }
 const moveBlackPiecePart2 = function(event){
-
     if (moveBlackChipPart2 == true && spaceOpen == true){
         movedToSpaceRow = parseInt(event.target.id.slice(0,1)) - 1
         movedToSpaceColumn = parseInt(event.target.id.slice(-1)) - 1
-        boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
-
-        if(selectedChip.classList.contains('redChip') && boardArray[movedToSpaceRow][movedToSpaceColumn]==0){
-            boardArray[movedToSpaceRow].splice(movedToSpaceColumn,1 ,-1)
-            event.target.appendChild(selectedChip)
-            spaceOpen = false
-            moveRedChipPart1 = true
-            moveBlackChipPart2 = false
-            return playerTurn = 'red'
-
-        console.log(boardArray)
-        
+        if ((selectedChipRow+1 == movedToSpaceRow && selectedChipColumn-1 == movedToSpaceColumn) || (selectedChipRow+1 == movedToSpaceRow && selectedChipColumn+1 == movedToSpaceColumn)){
+            if(selectedChip.classList.contains('redChip') && boardArray[movedToSpaceRow][movedToSpaceColumn]==0){
+                boardArray[movedToSpaceRow].splice(movedToSpaceColumn,1 ,-1)
+                boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
+                event.target.appendChild(selectedChip)
+                spaceOpen = false
+                moveRedChipPart1 = true
+                moveBlackChipPart2 = false
+                return playerTurn = 'red'
+            } else if (boardArray[movedToSpaceRow][movedToSpaceColumn]==0){
+                boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, 1)
+                boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
+                event.target.appendChild(selectedChip)
+                spaceOpen = false
+                moveRedChipPart1 = true
+                moveBlackChipPart2 = false
+                currentPlayerTurn = 'red'
+            }
+        }
     }
 }
 
