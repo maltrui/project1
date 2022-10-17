@@ -81,7 +81,6 @@ const moveBlackPiecePart1 = function(event){
                 //make outlines here
                 blackJumpPart2 = true
                 selectedChip = event.target
-                console.log('hello')
             }
 
         }
@@ -204,8 +203,8 @@ const checkForRedJump = function(boardArray){
     let rowCheck = 0
     let columnCheck = 0
     boardArray.forEach(function(row){
-        row.forEach(function(redTile){
-            if(redTile == -1){
+        row.forEach(function(blackTile){
+            if(blackTile == -1){
                 if (rowCheck == 0){
                     
                 } else {
@@ -271,7 +270,6 @@ const checkIfChipIsInJumpArray = function(array, row, column){
     for(i = 0; i < array.length; i ++){
         if(array[i][0] == row && array[i][1] == column){
             return true
-            console.log('got here')
         }
         console.log(array[i][0])
         console.log(row)
@@ -289,10 +287,20 @@ const makeBlackJumpHappen = function(event){
                 console.log(selectedChip)
                 boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, 1)
                 boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
+                if (selectedChipRow+2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn){
+                    console.log(selectedChipColumn)
+                    document.getElementById('actualCapturedRedChips').appendChild(document.getElementById((selectedChipRow+2).toString()+'-'+(selectedChipColumn-2).toString()).children[0])
+                }
+                if (selectedChipRow+2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn){
+                    document.getElementById('actualCapturedRedChips').appendChild(document.getElementById((selectedChipRow+2).toString()+'-'+(selectedChipColumn+2).toString()).children[0])
+                }
                 event.target.appendChild(selectedChip)
+                
                 spaceOpen = false
                 moveRedChipPart1 = true
                 blackJumpPart2 = false
+                isBlackJumpAvailable = false
+                availableBlackJumps.length = 0
                 currentPlayerTurn = 'red'
             }
         } 

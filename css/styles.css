@@ -59,6 +59,16 @@ body{
     margin-left: 5px;
     grid-row: 3/4;
 }
+#actualCapturedBlackChips{
+    display: flex;
+    justify-content: start;
+    grid-row: 2/3;
+}
+#actualCapturedRedChips{
+    display: flex;
+    justify-content: start;
+    grid-row: 4/5;
+}
 button{
     display: flex;
     grid-row: 3/4;
