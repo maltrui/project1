@@ -86,14 +86,7 @@ const moveRedPiecePart2 = function(event){
             moveBlackChipPart1 = true
             moveRedChipPart2 = false
             currentPlayerTurn = 'black'
-        } else if (boardArray[movedToSpaceRow][movedToSpaceColumn]==0){
-            boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, 1)
-            event.target.appendChild(selectedChip)
-            spaceOpen = false
-            moveBlackChipPart1 = true
-            moveRedChipPart2 = false
-            currentPlayerTurn = 'black'
-        }
+        } 
         console.log(boardArray)
         
     }
@@ -112,14 +105,7 @@ const moveBlackPiecePart2 = function(event){
             moveRedChipPart1 = true
             moveBlackChipPart2 = false
             return playerTurn = 'red'
-        } else if (boardArray[movedToSpaceRow][movedToSpaceColumn]==0){
-            boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, 1)
-            event.target.appendChild(selectedChip)
-            spaceOpen = false
-            moveRedChipPart1 = true
-            moveBlackChipPart2 = false
-            currentPlayerTurn = 'red'
-        }
+
         console.log(boardArray)
         
     }
