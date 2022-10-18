@@ -117,8 +117,6 @@ const moveBlackPiecePart1 = function(event){
                 moveBlackChipPart2 = true
                 selectedChip = event.target
             }
-            console.log(isBlackJumpAvailable +' isBlackJumpAvailable')
-            console.log(checkIfChipIsInJumpArray(availableBlackJumps, selectedChipRow, selectedChipColumn))
             if (isBlackJumpAvailable == true && checkIfChipIsInJumpArray(availableBlackJumps, selectedChipRow, selectedChipColumn) == true ){
                 blackJumpPart2 = true
                 selectedChip = event.target
@@ -252,7 +250,6 @@ const checkForBlackJump = function(boardArray){
                 }
                 
             } else if (blackTile == 2){
-                console.log(columnCheck)
                 if (columnCheck <= 1){
                     if(rowCheck != 7 && rowCheck != 6){
                         if(boardArray[rowCheck+1][columnCheck+1] <= -1){
@@ -406,15 +403,16 @@ const checkIfChipIsInJumpArray = function(array, row, column){
 }
 const makeBlackJumpHappen = function(event){
     if(changeTurn(currentPlayerTurn) == true){
+        console.log(availableBlackJumps)
         if (blackJumpPart2 == true){
             movedToSpaceRow = parseInt(event.target.id.slice(0,1)) - 1
             movedToSpaceColumn = parseInt(event.target.id.slice(-1)) - 1
             if(selectedChip.classList.contains('nonBlackKing')){
                 if((selectedChipRow+2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn) || (selectedChipRow+2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn)){
                     if(boardArray[movedToSpaceRow][movedToSpaceColumn]== 0){
-                        boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, 1)
-                        boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
                         if (selectedChipRow+2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn && boardArray[selectedChipRow+1][selectedChipColumn-1] < 0){
+                            boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, 1)
+                            boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
                             boardArray[selectedChipRow+1].splice((selectedChipColumn-1), 1, 0)
                             let newChip = document.createElement('div')
                             newChip.classList.add('chip', 'redChip', 'nonRedKing')
@@ -423,6 +421,8 @@ const makeBlackJumpHappen = function(event){
                             loggedJumpColumn = parseInt(event.target.id.slice(-1)) - 1
                         }
                         if (selectedChipRow+2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn && boardArray[selectedChipRow+1][selectedChipColumn+1] < 0){
+                            boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, 1)
+                            boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
                             boardArray[selectedChipRow+1].splice((selectedChipColumn+1), 1, 0)
                             let newChip = document.createElement('div')
                             newChip.classList.add('chip', 'redChip', 'nonRedKing')
@@ -439,9 +439,10 @@ const makeBlackJumpHappen = function(event){
                 console.log('here')
                 if((selectedChipRow+2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn) || (selectedChipRow+2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn) || (selectedChipRow-2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn) ||(selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn)){
                     if(boardArray[movedToSpaceRow][movedToSpaceColumn]== 0){
-                        boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, 2)
-                        boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
+
                         if (selectedChipRow+2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn && boardArray[selectedChipRow+1][selectedChipColumn-1] < 0 ){
+                            boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, 2)
+                            boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
                             boardArray[selectedChipRow+1].splice((selectedChipColumn-1), 1, 0)
                             let newChip = document.createElement('div')
                             newChip.classList.add('chip', 'redChip', 'nonRedKing')
@@ -449,6 +450,8 @@ const makeBlackJumpHappen = function(event){
                             loggedJumpRow = parseInt(event.target.id.slice(0,1)) - 1
                             loggedJumpColumn = parseInt(event.target.id.slice(-1)) - 1
                         }else if (selectedChipRow+2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn && boardArray[selectedChipRow+1][selectedChipColumn+1] < 0){
+                            boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, 2)
+                            boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
                             boardArray[selectedChipRow+1].splice((selectedChipColumn+1), 1, 0)
                             let newChip = document.createElement('div')
                             newChip.classList.add('chip', 'redChip', 'nonRedKing')
@@ -456,6 +459,8 @@ const makeBlackJumpHappen = function(event){
                             loggedJumpRow = parseInt(event.target.id.slice(0,1)) - 1
                             loggedJumpColumn = parseInt(event.target.id.slice(-1)) - 1
                         }else if (selectedChipRow-2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn && boardArray[selectedChipRow-1][selectedChipColumn+1] < 0){
+                            boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, 2)
+                            boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
                             boardArray[selectedChipRow-1].splice((selectedChipColumn+1), 1, 0)
                             let newChip = document.createElement('div')
                             newChip.classList.add('chip', 'redChip', 'nonRedKing')
@@ -463,6 +468,8 @@ const makeBlackJumpHappen = function(event){
                             loggedJumpRow = parseInt(event.target.id.slice(0,1)) - 1
                             loggedJumpColumn = parseInt(event.target.id.slice(-1)) - 1
                         }else if(selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn && boardArray[selectedChipRow-1][selectedChipColumn+1] < 0){
+                            boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, 2)
+                            boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
                             boardArray[selectedChipRow-1].splice((selectedChipColumn-1), 1, 0)
                             let newChip = document.createElement('div')
                             newChip.classList.add('chip', 'redChip', 'nonRedKing')
@@ -489,29 +496,28 @@ const makeRedJumpHappen = function(event){
             movedToSpaceRow = parseInt(event.target.id.slice(0,1)) - 1
             movedToSpaceColumn = parseInt(event.target.id.slice(-1)) - 1
             if((selectedChipRow-2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn) || (selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn)){
-    
+                console.log()
                 if(boardArray[movedToSpaceRow][movedToSpaceColumn]== 0){
-                    boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, -1)
-                    boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
                     if (selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn){
-                        console.log(selectedChipRow+1)
-                        console.log(selectedChipRow-1)
+                        boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, -1)
+                        boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
                         boardArray[selectedChipRow-1].splice((selectedChipColumn-1), 1, 0)
                         let newChip = document.createElement('div')
                         newChip.classList.add('chip', 'blackChip', 'nonBlackKing')
                         actualCapturedBlackChips.append(newChip)
                         loggedJumpRow = parseInt(event.target.id.slice(0,1)) - 1
                         loggedJumpColumn = parseInt(event.target.id.slice(-1)) - 1
-                        console.log(boardArray)
                     }
                     if (selectedChipRow-2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn){
+                        boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, -1)
+                        boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
                         boardArray[selectedChipRow-1].splice((selectedChipColumn+1), 1, 0)
                         let newChip = document.createElement('div')
                         newChip.classList.add('chip', 'blackChip', 'nonBlackKing')
                         actualCapturedBlackChips.append(newChip)
                         loggedJumpRow = parseInt(event.target.id.slice(0,1)) - 1
                         loggedJumpColumn = parseInt(event.target.id.slice(-1)) - 1
-                        console.log(boardArray)
+
                     }
     
     
@@ -525,8 +531,6 @@ const makeRedJumpHappen = function(event){
 }
 const canBlackJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
     if(movedToSpaceRow < 6){
-        console.log(boardArray[movedToSpaceRow+1][movedToSpaceColumn-1])
-        console.log(boardArray[movedToSpaceRow+2][movedToSpaceColumn-2])
         if(movedToSpaceColumn <= 2){
             if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] <= -1){
                 if(boardArray[movedToSpaceRow+2][movedToSpaceColumn+2] == 0){
@@ -550,16 +554,13 @@ const canBlackJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
                 return
             }
         } else {
-            console.log("why am i here")
             spaceOpen = false
             moveRedChipPart1 = true
             isBlackJumpAvailable = false
             availableBlackJumps.length = 0
             currentPlayerTurn = 'red'
         }
-
     }else if(movedToSpaceRow >= 6){
-  
         spaceOpen = false
         moveRedChipPart1 = true
         isBlackJumpAvailable = false
@@ -608,9 +609,7 @@ const canRedJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
     }
 } 
 const canBlackKingJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
-    console.log('start of func')
     if(movedToSpaceRow<=2){
-        console.log('first if')
         if(movedToSpaceColumn<=2){
             if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] <= -1){
                 if(boardArray[movedToSpace+2][movedToSpaceColumn+2] == 0){
