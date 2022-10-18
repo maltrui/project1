@@ -1,6 +1,7 @@
 //elements
 const board = document.getElementById('board')
-
+const tiles = board.childNodes
+console.log(tiles)
 let moveBlackChipPart1 = true
 let moveBlackChipPart2 = false
 let moveRedChipPart1 = true
@@ -27,17 +28,43 @@ let movedToSpaceColumn = ''
 const boardArray = [
     [0 , 1 , 0 , 1 , 0, 1 , 0 , 1 ],
     [1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 ],
-    [0 ,1, 0 ,1, 0 ,1, 0 , 1   ],
+    [0 ,1, 0 ,1, 0 ,1, 0 , 1 ],
     [0, 0, 0 , 0, 0, 0, 0, 0 ],
     [0, 0, 0 , 0 , 0, 0, 0, 0 ],
     [-1 , 0 , -1 , 0 , -1 , 0, -1 , 0 ],
-    [0 , -1 , 0 , -1 , 0, -1 , 0, -1 ],
+    [0 , -1 , 0 , -1 , 0, -1 , 0, -1  ],
     [-1 , 0 , -1 , 0 , -1 , 0 , -1 , 0 ],
 ]
 const availableBlackJumps = []
 const availableRedJumps = []
 
 //functions
+const createChips = function(board){
+    let placer = 1
+    board.forEach(function(row){
+        row.forEach(function(blackTile){
+            let newChip = document.createElement('div')
+            console.log(newChip)
+            if (blackTile == 1){
+                newChip.classList.add('chip', 'blackChip', 'nonBlackKing')
+                tiles[placer].appendChild(newChip)
+            }
+            if (blackTile == 2){
+                newChip.classList.add('chip', 'blackChip', 'blackKing')
+                tiles[placer].appendChild(newChip)
+            }
+            if (blackTile == -1){
+                newChip.classList.add('chip', 'redChip', 'nonRedKing')
+                tiles[placer].appendChild(newChip)
+            }
+            if(blackTile == -2){
+                newChip.classList.add('chip', 'redChip', 'redKing')
+                tiles[placer].appendChild(newChip)
+            }
+            placer = placer + 2
+        })
+    })
+}
 const changeTurn = function(currentPlayerTurn){
     return currentPlayerTurn == 'black'
 }
@@ -60,7 +87,6 @@ const moveRedPiecePart1 = function(event){
 
 }
 const moveBlackPiecePart1 = function(event){
-
     if(changeTurn(currentPlayerTurn) == true){
         if (moveBlackChipPart1 == true){
             selectedChipRow = parseInt(event.target.parentNode.id.slice(0,1))-1
@@ -319,3 +345,5 @@ board.addEventListener('click', function(chip){
         makeBlackJumpHappen(chip)
     }
 })
+
+createChips(boardArray)
