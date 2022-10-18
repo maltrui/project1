@@ -32,10 +32,10 @@ const boardArray = [
     [0 , 1 , 0 , 1 , 0, 1 , 0 , 1 ],
     [1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 ],
     [0 ,1, 0 ,1, 0 ,1, 0 , 1 ],
-    [0, 0, 0 , 0, -1, 0, 0, 0 ],
+    [0, 0, 0 , 0, 0, 0, 0, 0 ],
     [0, 0, 0 , 0 , 0, 0, 0, 0 ],
     [-1 , 0 , -1 , 0 , -1 , 0, -1 , 0 ],
-    [0 , -1 , 0 , -1 , 0, -1, 0, 0  ],
+    [0 , -1 , 0 , -1 , 0, -1, 0, -1  ],
     [-1 , 0 , -1 , 0 , -1 , 0 , -1 , 0 ],
 ]
 const availableBlackJumps = []
@@ -86,8 +86,12 @@ const moveRedPiecePart1 = function(event){
             if (event.target.classList.contains('redChip')){
                 checkOpenSpaceNotKingRed(selectedChipRow, selectedChipColumn)
             }
-            if (spaceOpen == true){
+            if (spaceOpen == true && isRedJumpAvailable == false){
                 moveRedChipPart2 = true
+                selectedChip = event.target
+            }
+            if(isRedJumpAvailable == true && checkIfChipIsInJumpArray(availableRedJumps, selectedChipRow, selectedChipColumn)){
+                redJumpPart2 = true
                 selectedChip = event.target
             }
         }
@@ -95,25 +99,20 @@ const moveRedPiecePart1 = function(event){
 
 }
 const moveBlackPiecePart1 = function(event){
-    console.log(moveBlackChipPart1 + " moveBlackChipAgain")
     if(changeTurn(currentPlayerTurn) == true){
         if (moveBlackChipPart1 == true){
             selectedChipRow = parseInt(event.target.parentNode.id.slice(0,1))-1
             selectedChipColumn = parseInt(event.target.parentNode.id.slice(-1))-1
             const arrayCheck = [selectedChipRow, selectedChipColumn]
             checkForBlackJump(boardArray)
-            console.log(isBlackJumpAvailable + ' isBlackJumpAvailable')
             if (event.target.classList.contains('blackChip')){
                 checkOpenSpaceNotKingBlack(selectedChipRow, selectedChipColumn)
             }
-            console.log(availableBlackJumps)
-            console.log(isBlackJumpAvailable +' is blackJumpAvailable')
             if (spaceOpen == true && isBlackJumpAvailable == false){
                 moveBlackChipPart2 = true
                 selectedChip = event.target
             }
             if (isBlackJumpAvailable == true && checkIfChipIsInJumpArray(availableBlackJumps, selectedChipRow, selectedChipColumn) == true ){
-                //make outlines here
                 blackJumpPart2 = true
                 selectedChip = event.target
             }
@@ -312,8 +311,6 @@ const makeBlackJumpHappen = function(event){
     if (blackJumpPart2 == true){
         movedToSpaceRow = parseInt(event.target.id.slice(0,1)) - 1
         movedToSpaceColumn = parseInt(event.target.id.slice(-1)) - 1
-        
-
         if((selectedChipRow+2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn) || (selectedChipRow+2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn)){
             if(boardArray[movedToSpaceRow][movedToSpaceColumn]== 0){
                 boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, 1)
@@ -339,87 +336,77 @@ const makeBlackJumpHappen = function(event){
             }
             canBlackJumpAgain(loggedJumpRow, loggedJumpColumn)
         }
-
-            
-
     }  
     createChips(boardArray)
-    console.log(boardArray)
+}
+const makeRedJumpHappen = function(event){
+    if (redJumpPart2 == true){
+        movedToSpaceRow = parseInt(event.target.id.slice(0,1)) - 1
+        movedToSpaceColumn = parseInt(event.target.id.slice(-1)) - 1
+        if((selectedChipRow-2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn) || (selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn)){
 
-    
+            if(boardArray[movedToSpaceRow][movedToSpaceColumn]== 0){
+                boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, -1)
+                boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
+                if (selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn){
+                    console.log(selectedChipRow+1)
+                    console.log(selectedChipRow-1)
+                    boardArray[selectedChipRow-1].splice((selectedChipColumn-1), 1, 0)
+                    let newChip = document.createElement('div')
+                    newChip.classList.add('chip', 'blackChip', 'nonBlackKing')
+                    actualCapturedBlackChips.append(newChip)
+                    loggedJumpRow = parseInt(event.target.id.slice(0,1)) - 1
+                    loggedJumpColumn = parseInt(event.target.id.slice(-1)) - 1
+                    console.log(boardArray)
+                }
+                if (selectedChipRow-2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn){
+                    boardArray[selectedChipRow-1].splice((selectedChipColumn+1), 1, 0)
+                    let newChip = document.createElement('div')
+                    newChip.classList.add('chip', 'blackChip', 'nonBlackKing')
+                    actualCapturedBlackChips.append(newChip)
+                    loggedJumpRow = parseInt(event.target.id.slice(0,1)) - 1
+                    loggedJumpColumn = parseInt(event.target.id.slice(-1)) - 1
+                    console.log(boardArray)
+                }
 
+
+            }
+            canRedJumpAgain(loggedJumpRow, loggedJumpColumn)
+        }
+    }  
+    createChips(boardArray)
 }
 const canBlackJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
-    console.log('start')
-    console.log(movedToSpaceRow)
-    console.log(movedToSpaceColumn)
     if(movedToSpaceRow < 6){
-        console.log('check')
-        if(boardArray[movedToSpaceRow + 1][movedToSpaceColumn + 1] != undefined  && boardArray[movedToSpaceRow + 1][movedToSpaceColumn - 1] != undefined){
-            console.log('check1')
-            if(boardArray[movedToSpaceRow + 1][movedToSpaceColumn + 1] > -1  && boardArray[movedToSpaceRow + 1][movedToSpaceColumn - 1] > -1){
-                spaceOpen = false
-                moveRedChipPart1 = true
-                blackJumpPart2 = false
-                isBlackJumpAvailable = false
-                availableBlackJumps.length = 0
-                currentPlayerTurn = 'red'
-        
-            }
-        } else if (boardArray[movedToSpaceRow + 1][movedToSpaceColumn + 1] != undefined ){
-            if(boardArray[movedToSpaceRow + 1][movedToSpaceColumn - 1] > -1){
-                spaceOpen = false
-                moveRedChipPart1 = true
-                blackJumpPart2 = false
-                isBlackJumpAvailable = false
-                availableBlackJumps.length = 0
-                currentPlayerTurn = 'red'
-        
-            }
-        } else if (boardArray[movedToSpaceRow + 1][movedToSpaceColumn - 1] != undefined){
-            if(boardArray[movedToSpaceRow + 1][movedToSpaceColumn + 1] > -1){
-                spaceOpen = false
-                moveRedChipPart1 = true
-                blackJumpPart2 = false
-                isBlackJumpAvailable = false
-                availableBlackJumps.length = 0
-                currentPlayerTurn = 'red'
-        
-            }
-            if(boardArray[movedToSpaceRow + 2][movedToSpaceColumn + 2] != undefined && boardArray[movedToSpaceRow + 2][movedToSpaceColumn - 2] != undefined){
-                if(boardArray[movedToSpaceRow + 2][movedToSpaceColumn + 2] > 0 && boardArray[movedToSpaceRow + 2][movedToSpaceColumn - 2] > 0 ){
-                    spaceOpen = false
-                    moveRedChipPart1 = true
-                    blackJumpPart2 = false
-                    isBlackJumpAvailable = false
-                    availableBlackJumps.length = 0
-                    currentPlayerTurn = 'red'
-                }
-            } else if(boardArray[movedToSpaceRow + 2][movedToSpaceColumn + 2] != undefined){
-                if(boardArray[movedToSpaceRow + 2][movedToSpaceColumn - 2] > 0 ){
-                    spaceOpen = false
-                    moveRedChipPart1 = true
-                    blackJumpPart2 = false
-                    isBlackJumpAvailable = false
-                    availableBlackJumps.length = 0
-                    currentPlayerTurn = 'red'
-                }
-            } else if(boardArray[movedToSpaceRow + 2][movedToSpaceColumn - 2] != undefined){
-                if(boardArray[movedToSpaceRow + 2][movedToSpaceColumn + 2] > 0 ){
-                    spaceOpen = false
-                    moveRedChipPart1 = true
-                    blackJumpPart2 = false
-                    isBlackJumpAvailable = false
-                    availableBlackJumps.length = 0
-                    currentPlayerTurn = 'red'
+        if(movedToSpaceColumn <= 2){
+            if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] <= -1){
+                if(boardArray[movedToSpaceRow+2][movedToSpaceColumn+2] == 0){
+                    return
                 }
             }
         }
+        if(movedToSpaceColumn >= 6){
+            if(boardArray[movedToSpaceRow+1][movedToSpaceColumn-1] <= -1){
+                if(boardArray[movedToSpaceRow+2][movedToSpaceColumn-2] == 0){
+                    return
+                }
+            }
         }
-    
-
-    if(movedToSpaceRow >= 6){
-        console.log('check 3')
+        if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] <= -1){
+            if(boardArray[movedToSpaceRow+2][movedToSpaceColumn+2] == 0){
+                return
+            }
+        } else if(boardArray[movedToSpaceRow+1][movedToSpaceColumn-1] <= -1){
+            if(boardArray[movedToSpaceRow+2][movedToSpaceColumn-2] == 0){
+                return
+            }
+        }
+        spaceOpen = false
+        moveRedChipPart1 = true
+        isBlackJumpAvailable = false
+        availableBlackJumps.length = 0
+        currentPlayerTurn = 'red'
+    }else if(movedToSpaceRow >= 6){
         spaceOpen = false
         moveRedChipPart1 = true
         isBlackJumpAvailable = false
@@ -427,7 +414,45 @@ const canBlackJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
         currentPlayerTurn = 'red'
     }
 } 
-  
+const canRedJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
+    if(movedToSpaceRow > 2){
+
+        if(movedToSpaceColumn <= 2){
+            if(boardArray[movedToSpaceRow-1][movedToSpaceColumn+1] <= -1){
+                if(boardArray[movedToSpaceRow-2][movedToSpaceColumn+2] == 0){
+                    return
+                }
+            }
+        }
+        if(movedToSpaceColumn >= 6){
+            if(boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] <= -1){
+                if(boardArray[movedToSpaceRow-2][movedToSpaceColumn-2] == 0){
+                    return
+                }
+            }
+        }
+        if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] <= -1){
+            if(boardArray[movedToSpaceRow-2][movedToSpaceColumn+2] == 0){
+                return
+            }
+        } else if(boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] <= -1){
+            if(boardArray[movedToSpaceRow-2][movedToSpaceColumn-2] == 0){
+                return
+            }
+        }
+        spaceOpen = false
+        moveBlackChipPart1 = true
+        isRedJumpAvailable = false
+        availableRedJumps.length = 0
+        currentPlayerTurn = 'black'
+    }else if(movedToSpaceRow  <= 2 ){
+        spaceOpen = false
+        moveBlackChipPart1 = true
+        isRedJumpAvailable = false
+        availableRedJumps.length = 0
+        currentPlayerTurn = 'black'
+    }
+} 
 
 
 //event listeners
@@ -440,6 +465,7 @@ board.addEventListener('click', function(chip){
         moveRedPiecePart2(chip)
         moveBlackPiecePart2(chip)
         makeBlackJumpHappen(chip)
+        makeRedJumpHappen(chip)
     }
 })
 
