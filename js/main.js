@@ -1,7 +1,7 @@
 //elements
 const board = document.getElementById('board')
 const tiles = board.childNodes
-console.log(tiles)
+
 let moveBlackChipPart1 = true
 let moveBlackChipPart2 = false
 let moveRedChipPart1 = true
@@ -43,8 +43,10 @@ const createChips = function(board){
     let placer = 1
     board.forEach(function(row){
         row.forEach(function(blackTile){
+            while (tiles[placer].firstChild){
+                tiles[placer].removeChild(tiles[placer].firstChild)
+            }
             let newChip = document.createElement('div')
-            console.log(newChip)
             if (blackTile == 1){
                 newChip.classList.add('chip', 'blackChip', 'nonBlackKing')
                 tiles[placer].appendChild(newChip)
@@ -65,6 +67,7 @@ const createChips = function(board){
         })
     })
 }
+
 const changeTurn = function(currentPlayerTurn){
     return currentPlayerTurn == 'black'
 }
@@ -120,7 +123,7 @@ const moveRedPiecePart2 = function(event){
         if((selectedChipRow-1 == movedToSpaceRow && selectedChipColumn-1 == movedToSpaceColumn) || (selectedChipRow-1 == movedToSpaceRow && selectedChipColumn+1 == movedToSpaceColumn)){
             boardArray[movedToSpaceRow].splice(movedToSpaceColumn,1 ,-1)
             boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
-            event.target.appendChild(selectedChip)
+            createChips(boardArray)
             spaceOpen = false
             moveBlackChipPart1 = true
             moveRedChipPart2 = false
@@ -135,7 +138,7 @@ const moveBlackPiecePart2 = function(event){
         if ((selectedChipRow+1 == movedToSpaceRow && selectedChipColumn-1 == movedToSpaceColumn) || (selectedChipRow+1 == movedToSpaceRow && selectedChipColumn+1 == movedToSpaceColumn)){
             boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, 1)
             boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
-            event.target.appendChild(selectedChip)
+            createChips(boardArray)
             spaceOpen = false
             moveRedChipPart1 = true
             moveBlackChipPart2 = false
@@ -297,11 +300,6 @@ const checkIfChipIsInJumpArray = function(array, row, column){
         if(array[i][0] == row && array[i][1] == column){
             return true
         }
-        console.log(array[i][0])
-        console.log(row)
-        console.log(array[i][1])
-        console.log(column)
-
     }
 }
 const makeBlackJumpHappen = function(event){
@@ -314,14 +312,20 @@ const makeBlackJumpHappen = function(event){
                 boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, 1)
                 boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
                 if (selectedChipRow+2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn){
-                    console.log(selectedChipColumn)
-                    document.getElementById('actualCapturedRedChips').appendChild(document.getElementById((selectedChipRow+2).toString()+'-'+(selectedChipColumn-2).toString()).children[0])
+                    boardArray[selectedChipRow+1].splice((selectedChipColumn-1), 1, 0)
+                    let newChip = document.createElement('div')
+                    newChip.classList.add('chip', 'redChip', 'nonRedKing')
+                    actualCapturedRedChips.append(newChip)
+
                 }
                 if (selectedChipRow+2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn){
-                    document.getElementById('actualCapturedRedChips').appendChild(document.getElementById((selectedChipRow+2).toString()+'-'+(selectedChipColumn+2).toString()).children[0])
+                    boardArray[selectedChipRow+1].splice((selectedChipColumn+1), 1, 0)
+                    let newChip = document.createElement('div')
+                    newChip.classList.add('chip', 'redChip', 'nonRedKing')
+                    actualCapturedRedChips.append(newChip)
                 }
-                event.target.appendChild(selectedChip)
-                
+
+                createChips(boardArray)
                 spaceOpen = false
                 moveRedChipPart1 = true
                 blackJumpPart2 = false
