@@ -751,48 +751,45 @@ const makeRedJumpHappen = function(event){
     
 }
 const canBlackJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
-
+    console.log('start')
     if(movedToSpaceRow < 6){
         if(movedToSpaceColumn <= 2){
-
+            console.log('first if')
             if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] <= -1){
                 if(boardArray[movedToSpaceRow+2][movedToSpaceColumn+2] == 0){
-
                     return
                 }
             }
         } else if(movedToSpaceColumn >= 6){
             if(boardArray[movedToSpaceRow+1][movedToSpaceColumn-1] <= -1){
+                console.log('plz get here')
                 if(boardArray[movedToSpaceRow+2][movedToSpaceColumn-2] == 0){
-
                     return
                 }
             }
-        }else if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] <= -1){
+        }
+        if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] <= -1){
+            console.log('hello')
             if(boardArray[movedToSpaceRow+2][movedToSpaceColumn+2] == 0){
+                console.log(' ideal')
                 return
             }
-        } else if(boardArray[movedToSpaceRow+1][movedToSpaceColumn-1] <= -1){
+        }
+        if(boardArray[movedToSpaceRow+1][movedToSpaceColumn-1] <= -1){
+            console.log('bro please please')
             if(boardArray[movedToSpaceRow+2][movedToSpaceColumn-2] == 0){
-
+                console.log('also ideal')
                 return
             }
-        } else {
-
+        }
+            console.log( 'mhmmmm')
             spaceOpen = false
             moveRedChipPart1 = true
             isBlackJumpAvailable = false
             availableBlackJumps.length = 0
             currentPlayerTurn = 'Red'
-        }
-
-        spaceOpen = false
-        moveRedChipPart1 = true
-        isBlackJumpAvailable = false
-        availableBlackJumps.length = 0
-        currentPlayerTurn = 'Red'
-    }else{
-
+        }else{
+        console.log('wtf')
         spaceOpen = false
         moveRedChipPart1 = true
         isBlackJumpAvailable = false
@@ -820,17 +817,12 @@ const canRedJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
             if(boardArray[movedToSpaceRow-2][movedToSpaceColumn+2] == 0){
                 return
             }
-        } else if(boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] >= 1){
+        }  
+        if(boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] >= 1){
             if(boardArray[movedToSpaceRow-2][movedToSpaceColumn-2] == 0){
                 console.log('no way')
                 return
             }
-        } else {
-            spaceOpen = false
-            moveBlackChipPart1 = true
-            isRedJumpAvailable = false
-            availableRedJumps.length = 0
-            currentPlayerTurn = 'Black'
         }
         spaceOpen = false
         moveBlackChipPart1 = true
