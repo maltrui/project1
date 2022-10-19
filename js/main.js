@@ -696,7 +696,6 @@ const makeRedJumpHappen = function(event){
 
                 }
             } else if(selectedChip.classList.contains('redKing')){
-                console.log('start of King jump')
                 if((selectedChipRow+2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn) || (selectedChipRow+2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn) || (selectedChipRow-2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn) ||(selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn)){
                     if(boardArray[movedToSpaceRow][movedToSpaceColumn]==0){
                         if (selectedChipRow+2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn && boardArray[selectedChipRow+1][selectedChipColumn-1] > 0 ){
@@ -751,10 +750,8 @@ const makeRedJumpHappen = function(event){
     
 }
 const canBlackJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
-    console.log('start')
     if(movedToSpaceRow < 6){
         if(movedToSpaceColumn <= 2){
-            console.log('first if')
             if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] <= -1){
                 if(boardArray[movedToSpaceRow+2][movedToSpaceColumn+2] == 0){
                     return
@@ -762,34 +759,27 @@ const canBlackJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
             }
         } else if(movedToSpaceColumn >= 6){
             if(boardArray[movedToSpaceRow+1][movedToSpaceColumn-1] <= -1){
-                console.log('plz get here')
                 if(boardArray[movedToSpaceRow+2][movedToSpaceColumn-2] == 0){
                     return
                 }
             }
         }
         if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] <= -1){
-            console.log('hello')
             if(boardArray[movedToSpaceRow+2][movedToSpaceColumn+2] == 0){
-                console.log(' ideal')
                 return
             }
         }
         if(boardArray[movedToSpaceRow+1][movedToSpaceColumn-1] <= -1){
-            console.log('bro please please')
             if(boardArray[movedToSpaceRow+2][movedToSpaceColumn-2] == 0){
-                console.log('also ideal')
                 return
             }
         }
-            console.log( 'mhmmmm')
             spaceOpen = false
             moveRedChipPart1 = true
             isBlackJumpAvailable = false
             availableBlackJumps.length = 0
             currentPlayerTurn = 'Red'
         }else{
-        console.log('wtf')
         spaceOpen = false
         moveRedChipPart1 = true
         isBlackJumpAvailable = false
@@ -820,7 +810,6 @@ const canRedJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
         }  
         if(boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] >= 1){
             if(boardArray[movedToSpaceRow-2][movedToSpaceColumn-2] == 0){
-                console.log('no way')
                 return
             }
         }
@@ -998,7 +987,7 @@ const canRedKingJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
             availableRedJumps.length = 0
             currentPlayerTurn = 'Black'
         }
-        console.log('check 2')
+
         spaceOpen = false
         moveBlackChipPart1 = true
         isRedJumpAvailable = false
