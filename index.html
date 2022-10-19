@@ -10,7 +10,7 @@
 </head>
 <body>
     <div id="turnTitles">
-        <h2 id="playerTurnTitle"><u>Player Turn:</u></h2><h2 id="playerTurn">Black</h2>
+        <h2 id="playerTurnTitle"><u>Player Turn:</u></h2><h2 id="playerTurn"></h2>
     </div>
     <div id="board">
         <div id="1-1" class = 'row1 column1 red boardPiece'></div>
@@ -78,19 +78,20 @@
         <div id="8-7" class = 'row8 column7 black boardPiece'></div>
         <div id="8-8" class = 'row8 column8 red boardPiece'></div>
     </div>
-    <button>Reset</button>
+    <button id="playAgain">Reset</button>
     <div id="allCapturedPiecesTitles">
-        <h3 id="capturedBlackPieces"><u>Captured Black Pieces:</u> <div id = "numOfCapturedBlack">0</div></h3>
-        <h3 id="capturedRedPieces"><u>Captured Red Pieces:</u> <div id = "numOfCapturedRed">0</div></h3>
+        <h3 id="capturedBlackPieces"><u>Captured Black Pieces:</u></h3>
+        <h3 id="capturedRedPieces"><u>Captured Red Pieces:</u></h3>
         <div id="actualCapturedBlackChips"></div>
         <div id="actualCapturedRedChips"></div>
     </div>
     <div id="playerWinsTitles">
         <div id = 'blackWins'><u>Black Wins:</u></div>
-        <div id='numOfBlackWins'>0</div>
+        <div id='numOfBlackWins'></div>
         <div id = 'redWins'><u>Red Wins:</u></div>
-        <div id='numOfRedWins'>0</div>
+        <div id='numOfRedWins'></div>
     </div>
+    <div id="endGameState"></div>
 
 </body>
 </html>

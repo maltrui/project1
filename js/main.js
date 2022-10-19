@@ -1,10 +1,11 @@
 //elements
 const board = document.getElementById('board')
 const tiles = board.childNodes
+const button = document.getElementById('playAgain')
 
 let moveBlackChipPart1 = true
 let moveBlackChipPart2 = false
-let moveRedChipPart1 = true
+let moveRedChipPart1 = false
 let moveRedChipPart2 = false
 
 let spaceOpen = false
@@ -15,9 +16,12 @@ let blackJumpPart2 = false
 let redJumpPart2 = false
 
 
-let currentPlayerTurn = 'black'
-
-
+let currentPlayerTurn = 'Black'
+document.getElementById('playerTurn').innerText = currentPlayerTurn
+let numOfBlackWins = 0
+let numOfRedWins = 0
+document.getElementById('numOfBlackWins').innerText = numOfBlackWins
+document.getElementById('numOfRedWins').innerText = numOfRedWins
 
 let selectedChip = ''
 let selectedChipRow = ''
@@ -28,10 +32,10 @@ let loggedJumpRow = ''
 let loggedJumpColumn = ''
 
 
-const boardArray = [
-    [0 , 1 , 0 , 1 , 0, 1 , 0 , -1 ],
+let boardArray = [
+    [0 , 1 , 0 , 1 , 0, 1 , 0 , 1 ],
     [1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 ],
-    [0 ,1, 0 ,1, 0 ,0, 0 , 1 ],
+    [0 ,1, 0 ,1, 0 ,1, 0 , 1 ],
     [0, 0, 0 , 0, 0, 0, 0, 0 ],
     [0, 0, 0 , 0 , 0, 0, 0, 0 ],
     [-1 , 0 , -1 , 0 , -1 , 0, -1 , 0 ],
@@ -74,7 +78,9 @@ const createChips = function(board){
 }
 
 const changeTurn = function(currentPlayerTurn){
-    return currentPlayerTurn == 'black'
+    document.getElementById('playerTurn').innerText = ''
+    document.getElementById('playerTurn').innerText = currentPlayerTurn
+    return currentPlayerTurn == 'Black'
 }
 
 const moveRedPiecePart1 = function(event){
@@ -142,7 +148,9 @@ const moveRedPiecePart2 = function(event){
                 spaceOpen = false
                 moveBlackChipPart1 = true
                 moveRedChipPart2 = false
-                currentPlayerTurn = 'black'
+                currentPlayerTurn = 'Black'
+                checkWin()
+                changeTurn(currentPlayerTurn)
             }  
         } else if(selectedChip.classList.contains('redKing')){
             if((selectedChipRow+1 == movedToSpaceRow && selectedChipColumn-1 == movedToSpaceColumn) || (selectedChipRow+1 == movedToSpaceRow && selectedChipColumn+1 == movedToSpaceColumn) || (selectedChipRow-1 == movedToSpaceRow && selectedChipColumn-1 == movedToSpaceColumn) || (selectedChipRow-1 == movedToSpaceRow && selectedChipColumn+1 == movedToSpaceColumn)){
@@ -153,7 +161,9 @@ const moveRedPiecePart2 = function(event){
                 spaceOpen = false
                 moveBlackChipPart1 = true
                 moveRedChipPart2 = false
-                currentPlayerTurn = 'black'
+                currentPlayerTurn = 'Black'
+                checkWin()
+                changeTurn(currentPlayerTurn)
             }
         }
     }
@@ -171,7 +181,8 @@ const moveBlackPiecePart2 = function(event){
                 spaceOpen = false
                 moveRedChipPart1 = true
                 moveBlackChipPart2 = false
-                currentPlayerTurn = 'red'
+                currentPlayerTurn = 'Red'
+                checkWin()
             } 
         }else if (selectedChip.classList.contains('blackKing')){
             if((selectedChipRow+1 == movedToSpaceRow && selectedChipColumn-1 == movedToSpaceColumn) || (selectedChipRow+1 == movedToSpaceRow && selectedChipColumn+1 == movedToSpaceColumn) || (selectedChipRow-1 == movedToSpaceRow && selectedChipColumn-1 == movedToSpaceColumn) || (selectedChipRow-1 == movedToSpaceRow && selectedChipColumn+1 == movedToSpaceColumn)){
@@ -182,11 +193,13 @@ const moveBlackPiecePart2 = function(event){
                 spaceOpen = false
                 moveRedChipPart1 = true
                 moveBlackChipPart2 = false
-                currentPlayerTurn = 'red'
+                currentPlayerTurn = 'Red'
+                checkWin()
             }
         }
 
     }
+
 }
 
 const checkOpenSpaceNotKingRed = function(movedToSpaceRow, movedToSpaceColumn){
@@ -646,8 +659,10 @@ const makeBlackJumpHappen = function(event){
                 }
     
             }
-    
+            changeTurn(currentPlayerTurn)
+            checkWin()
         }
+        
         makeAKing()  
         createChips(boardArray)
     }
@@ -735,8 +750,10 @@ const makeRedJumpHappen = function(event){
                     canRedKingJumpAgain(loggedJumpRow, loggedJumpColumn)
                 }
             }
-
+            changeTurn(currentPlayerTurn)
+            checkWin()
         }
+        
         makeAKing()
         createChips(boardArray)
     }
@@ -775,21 +792,21 @@ const canBlackJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
             moveRedChipPart1 = true
             isBlackJumpAvailable = false
             availableBlackJumps.length = 0
-            currentPlayerTurn = 'red'
+            currentPlayerTurn = 'Red'
         }
 
         spaceOpen = false
         moveRedChipPart1 = true
         isBlackJumpAvailable = false
         availableBlackJumps.length = 0
-        currentPlayerTurn = 'red'
+        currentPlayerTurn = 'Red'
     }else{
 
         spaceOpen = false
         moveRedChipPart1 = true
         isBlackJumpAvailable = false
         availableBlackJumps.length = 0
-        currentPlayerTurn = 'red'
+        currentPlayerTurn = 'Red'
     }
 } 
 const canRedJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
@@ -821,7 +838,7 @@ const canRedJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
             moveBlackChipPart1 = true
             isRedJumpAvailable = false
             availableRedJumps.length = 0
-            currentPlayerTurn = 'black'
+            currentPlayerTurn = 'Black'
         }
 
     }else{
@@ -829,7 +846,7 @@ const canRedJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
         moveBlackChipPart1 = true
         isRedJumpAvailable = false
         availableRedJumps.length = 0
-        currentPlayerTurn = 'black'
+        currentPlayerTurn = 'Black'
     }
 } 
 const canBlackKingJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
@@ -861,7 +878,7 @@ const canBlackKingJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
             moveRedChipPart1 = true
             isBlackJumpAvailable = false
             availableBlackJumps.length = 0
-            currentPlayerTurn = 'red'
+            currentPlayerTurn = 'Red'
     
     } else if(movedToSpaceRow >= 6){
         if(movedToSpaceColumn<=2){
@@ -886,23 +903,21 @@ const canBlackKingJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
                     return
                 }
             }
-            console.log
+
             spaceOpen = false
             moveRedChipPart1 = true
             isBlackJumpAvailable = false
             availableBlackJumps.length = 0
-            currentPlayerTurn = 'red'
+            currentPlayerTurn = 'Red'
         }
-            console.log
             spaceOpen = false
             moveRedChipPart1 = true
             isBlackJumpAvailable = false
             availableBlackJumps.length = 0
-            currentPlayerTurn = 'red'
+            currentPlayerTurn = 'Red'
         
     } else {
         if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] <= -1 || boardArray[movedToSpaceRow+1][movedToSpaceColumn-1]<=-1 || boardArray[movedToSpaceRow-1][movedToSpaceColumn+1] <= -1 || boardArray[movedToSpaceRow-1][movedToSpaceColumn-1]<=-1){
-            console.log('please be this')
             if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] <= -1){
                 if(boardArray[movedToSpaceRow+2][movedToSpaceColumn+2] == 0){
                     return
@@ -924,20 +939,18 @@ const canBlackKingJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
             moveRedChipPart1 = true
             isBlackJumpAvailable = false
             availableBlackJumps.length = 0
-            currentPlayerTurn = 'red'
+            currentPlayerTurn = 'Red'
         } else{
             spaceOpen = false
             moveRedChipPart1 = true
             isBlackJumpAvailable = false
             availableBlackJumps.length = 0
-            currentPlayerTurn = 'red'
+            currentPlayerTurn = 'Red'
         }
     }
 }
 const canRedKingJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
-    console.log(movedToSpaceRow)
     if(movedToSpaceRow<2){
-        console.log('start of again king jump')
         if(movedToSpaceColumn<2){
             if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] >= 1){
                 if(boardArray[movedToSpace+2][movedToSpaceColumn+2] == 0){
@@ -961,15 +974,13 @@ const canRedKingJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
                 }
             }
         } 
-        console.log('check 1')
             spaceOpen = false
             moveBlackChipPart1 = true
             isRedJumpAvailable = false
             availableRedJumps.length = 0
-            currentPlayerTurn = 'black'
+            currentPlayerTurn = 'Black'
     
     } else if(movedToSpaceRow >= 6){
-        console.log('are we here???')
         if(movedToSpaceColumn<=2){
             if(boardArray[movedToSpaceRow-1][movedToSpaceColumn+1] >= 1){
                 if(boardArray[movedToSpace-2][movedToSpaceColumn+2] == 0){
@@ -996,18 +1007,17 @@ const canRedKingJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
             moveBlackChipPart1 = true
             isRedJumpAvailable = false
             availableRedJumps.length = 0
-            currentPlayerTurn = 'black'
+            currentPlayerTurn = 'Black'
         }
         console.log('check 2')
         spaceOpen = false
         moveBlackChipPart1 = true
         isRedJumpAvailable = false
         availableRedJumps.length = 0
-        currentPlayerTurn = 'black'
+        currentPlayerTurn = 'Black'
         
     } else {
         if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] >= 1 || boardArray[movedToSpaceRow+1][movedToSpaceColumn-1] >=1 || boardArray[movedToSpaceRow-1][movedToSpaceColumn+1] >= 1 || boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] >= 1){
-            console.log('please be this')
             if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] >= 1){
                 if(boardArray[movedToSpaceRow+2][movedToSpaceColumn+2] == 0){
                     return
@@ -1025,19 +1035,17 @@ const canRedKingJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
                     return
                 }
             } 
-            console.log('check 3')
             spaceOpen = false
             moveBlackChipPart1 = true
             isRedJumpAvailable = false
             availableRedJumps.length = 0
-            currentPlayerTurn = 'black'
+            currentPlayerTurn = 'Black'
         } else{
-            console.log('check 4')
             spaceOpen = false
             moveBlackChipPart1 = true
             isRedJumpAvailable = false
             availableRedJumps.length = 0
-            currentPlayerTurn = 'black'
+            currentPlayerTurn = 'Black'
         }
     }
 }
@@ -1063,6 +1071,145 @@ const makeAKing = function(){
     })
 }
 
+const checkWin = function(){
+    let didBlackWin = true
+    let didRedWin = true
+    let cantBlackMove = false
+    let cantRedMove = false
+    let numOfRedChips = 0
+    let numOfRedChipsThatCantMove = 0
+    let numOfBlackChips = 0
+    let numOfBlackChipsThatCantMove = 0
+    boardArray.forEach(function(row){
+        row.forEach(function(blackTile){
+            if(blackTile == 1 || blackTile == 2){
+                didRedWin = false
+                numOfBlackChips = numOfBlackChips + 1
+            }
+            if(blackTile == -1 || blackTile == -2){
+                didBlackWin = false
+                numOfRedChips = numOfRedChips + 1
+            }
+        })
+    })
+    let rowCheck = 0
+    let columnCheck = 0 
+    boardArray.forEach(function(row){
+        row.forEach(function(blackTile){
+            if(blackTile == 1){
+                if (rowCheck < 7){
+                    checkOpenSpaceNotKingBlack(rowCheck,columnCheck)
+                }
+                if (spaceOpen == false){
+                    numOfBlackChipsThatCantMove = numOfRedChipsThatCantMove + 1
+                }
+                spaceOpen = false
+            }
+            if(blackTile == 2){
+                checkOpenSpaceKing(rowCheck, columnCheck)
+                if (spaceOpen == false){
+                    numOfBlackChipsThatCantMove = numOfRedChipsThatCantMove + 1
+                }
+                spaceOpen = false
+            }
+            if(blackTile == -1){
+                if(rowCheck > 0){
+                    checkOpenSpaceNotKingRed(rowCheck, columnCheck)
+                }
+                if (spaceOpen == false){
+                    numOfRedChipsThatCantMove = numOfRedChipsThatCantMove + 1
+                }
+                spaceOpen = false
+            }
+            if(blackTile == -2){
+                checkOpenSpaceKing(rowCheck, columnCheck)
+                if(spaceOpen == false){
+                    numOfRedChipsThatCantMove = numOfRedChipsThatCantMove + 1
+                }
+                spaceOpen = false
+            }
+            columnCheck = columnCheck + 1
+        })
+        rowCheck = rowCheck + 1
+        columnCheck = 0
+    })
+    if (numOfBlackChips == numOfBlackChipsThatCantMove && numOfBlackChips != 0){
+        cantBlackMove = true
+    }
+    if (numOfRedChips == numOfRedChipsThatCantMove && numOfRedChips != 0){
+        cantRedMove = true
+    }
+    if (didBlackWin == true){
+        numOfBlackWins = numOfBlackWins + 1
+        document.getElementById('numOfBlackWins').innerText = numOfBlackWins
+        moveBlackChipPart1 = false
+        moveBlackChipPart2 = false
+        moveRedChipPart1 = false
+        moveRedChipPart2 = false
+        document.getElementById('endGameState').innerText = 'Black Wins! Press Resart to play again!'
+    }
+    if (didRedWin == true){
+        numOfRedWins = numOfRedWins + 1
+        document.getElementById('numOfRedWins').innerText = numOfRedWins
+        document.getElementById('endGameState').innerText = 'Red Wins! Press Resart to play again!'
+        moveBlackChipPart1 = false
+        moveBlackChipPart2 = false
+        moveRedChipPart1 = false
+        moveRedChipPart2 = false
+
+    }
+    if (cantBlackMove == true){
+        numOfRedWins = numOfRedWins + 1
+        document.getElementById('numOfRedWins').innerText = numOfRedWins
+        document.getElementById('endGameState').innerText = 'Black has no more moves! Red Wins! Press Reset to play again!'
+        moveBlackChipPart1 = false
+        moveBlackChipPart2 = false
+        moveRedChipPart1 = false
+        moveRedChipPart2 = false
+
+    }
+    if (cantRedMove == true){
+        numOfBlackWins = numOfBlackWins + 1
+        document.getElementById('numOfBlackWins').innerText = numOfBlackWins
+        document.getElementById('endGameState').innerText = 'Red has no more moves! Black Wins! Press Reset to play again!'
+        moveBlackChipPart1 = false
+        moveBlackChipPart2 = false
+        moveRedChipPart1 = false
+        moveRedChipPart2 = false
+    }
+
+}
+
+const resetBoard = function(){
+boardArray = [
+    [0 , 1 , 0 , 1 , 0, 1 , 0 , 1 ],
+    [1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 ],
+    [0 ,1, 0 ,1, 0 ,1, 0 , 1 ],
+    [0, 0, 0 , 0, 0, 0, 0, 0 ],
+    [0, 0, 0 , 0 , 0, 0, 0, 0 ],
+    [-1 , 0 , -1 , 0 , -1 , 0, -1 , 0 ],
+    [0 , -1 , 0 , -1 , 0, -1, 0, -1  ],
+    [-1 , 0 , -1 , 0 , -1 , 0 , -1 , 0 ],
+]
+while (actualCapturedBlackChips.firstChild){
+    actualCapturedBlackChips.removeChild(actualCapturedBlackChips.firstChild)
+}
+while (actualCapturedRedChips.firstChild){
+    actualCapturedRedChips.removeChild(actualCapturedRedChips.firstChild)
+}
+moveBlackChipPart1 = true
+moveBlackChipPart2 = false
+moveRedChipPart1 = false
+moveRedChipPart2 = false
+spaceOpen = false
+isBlackJumpAvailable = false
+isRedJumpAvailable = false
+blackJumpPart2 = false
+redJumpPart2 = false
+currentPlayerTurn = 'Black'
+document.getElementById('endGameState').innerText = ''
+createChips(boardArray)
+}
 
 //event listeners
 board.addEventListener('click', function(chip){
@@ -1077,5 +1224,5 @@ board.addEventListener('click', function(chip){
         makeRedJumpHappen(chip)
     }
 })
-
+button.addEventListener('click', () => resetBoard())
 createChips(boardArray)

@@ -142,3 +142,8 @@ button{
 .blackKing{
     color: white; 
 }
+#endGameState{
+    display: flex;
+    grid-row: 5/6;
+    grid-column: 2/3;
+}
