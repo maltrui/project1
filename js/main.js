@@ -373,7 +373,7 @@ const checkForRedJump = function(boardArray){
     boardArray.forEach(function(row){
         row.forEach(function(blackTile){
             if(blackTile == -1){
-                if (rowCheck == 0){
+                if (rowCheck == 0 && rowCheck == 1){
                     
                 } else {
                     if (columnCheck == 0){
@@ -428,44 +428,75 @@ const checkForRedJump = function(boardArray){
                 }
 
             } else if (blackTile == -2){
-                if (columnCheck <= 1){
-                    if(rowCheck != 7 && rowCheck != 6){
-                        if(boardArray[rowCheck+1][columnCheck+1] >= 1){
-                            if(boardArray[rowCheck+2][columnCheck+2] == 0){
+                if (rowCheck <= 1){
+                    if(columnCheck <= 1){
+                        if(boardArray[rowCheck+1][columnCheck+1] >=1){
+                            if(boardArray[rowCheck+2][columnCheck+2] == 1){
                                 isRedJumpAvailable = true
-                                let saveSpaces = [rowCheck , columnCheck]
+                                let saveSpaces = [rowCheck,columnCheck]
                                 availableRedJumps.push(saveSpaces)
                             }
                         }
-                    }
-                    if(rowCheck != 0 && rowCheck != 1){
-                        if(boardArray[rowCheck-1][columnCheck+1] >= 1){
-                            if(boardArray[rowCheck-2][columnCheck+2] == 0){
-                                isRedJumpAvailable = true
-                                let saveSpaces = [rowCheck , columnCheck]
-                                availableRedJumps.push(saveSpaces)
-                            }
-                        }
-                    }
-                } else if (columnCheck >= 6){
-                    if(rowCheck != 0 && rowCheck != 1){
-                        if(boardArray[rowCheck-1][columnCheck-1] >= 1){
-                            if(boardArray[rowCheck-2][column-2] == 0){
-                                isRedJumpAvailable = true
-                                let saveSpaces = [rowCheck , columnCheck]
-                                availableRedJumps.push(saveSpaces)
-                            }
-                        }
-                    }
-                    if (rowCheck != 7 && rowCheck != 6){
-                        if(boardArray[rowCheck+1][columnCheck-1] >= 1){
+                    }else if(columnCheck >= 6){
+                        if(boardArray[rowCheck+1][columnCheck-1] >=1){
                             if(boardArray[rowCheck+2][columnCheck-2] == 0){
                                 isRedJumpAvailable = true
-                                let saveSpaces = [rowCheck , columnCheck]
+                                let saveSpaces = [rowCheck,columnCheck]
                                 availableRedJumps.push(saveSpaces)
                             }
                         }
-                    }else if (boardArray[rowCheck+1][columnCheck+1] >= 1 || boardArray[rowCheck+1][columnCheck-1] >= 1 || boardArray[rowCheck-1][columnCheck+1] >= 1 ||  boardArray[rowCheck-1][columnCheck-1] >= 1){
+                    } else if (boardArray[rowCheck+1][columnCheck+1] >=1 || boardArray[rowCheck+1][columnCheck-1] >=1){
+                        if(boardArray[rowCheck+1][columnCheck+1] >=1){
+                            if(boardArray[rowCheck+2][columnCheck+2] == 1){
+                                isRedJumpAvailable = true
+                                let saveSpaces = [rowCheck,columnCheck]
+                                availableRedJumps.push(saveSpaces)
+                            }
+                        }
+                        if(boardArray[rowCheck+1][columnCheck-1] >=1){
+                            if(boardArray[rowCheck+2][columnCheck-2] == 0){
+                                isRedJumpAvailable = true
+                                let saveSpaces = [rowCheck,columnCheck]
+                                availableRedJumps.push(saveSpaces)
+                            }
+                        }
+                    }
+                    
+                } else if (rowCheck >= 6){
+                    if(columnCheck <= 1){
+                        if(boardArray[rowCheck-1][columnCheck+1] >=1){
+                            if(boardArray[rowCheck-1][columnCheck+2] == 1){
+                                isRedJumpAvailable = true
+                                let saveSpaces = [rowCheck,columnCheck]
+                                availableRedJumps.push(saveSpaces)
+                            }
+                        }
+                    }else if(columnCheck >= 6){
+                        if(boardArray[rowCheck-1][columnCheck-1] >=1){
+                            if(boardArray[rowCheck-2][columnCheck-2] == 0){
+                                isRedJumpAvailable = true
+                                let saveSpaces = [rowCheck,columnCheck]
+                                availableRedJumps.push(saveSpaces)
+                            }
+                        }
+                    } else if (boardArray[rowCheck-1][columnCheck+1] >=1 || boardArray[rowCheck-1][columnCheck-1] >=1){
+                        if(boardArray[rowCheck-1][columnCheck+1] >=1){
+                            if(boardArray[rowCheck-2][columnCheck+2] == 1){
+                                isRedJumpAvailable = true
+                                let saveSpaces = [rowCheck,columnCheck]
+                                availableRedJumps.push(saveSpaces)
+                            }
+                        }
+                        if(boardArray[rowCheck-1][columnCheck-1] >=1){
+                            if(boardArray[rowCheck-2][columnCheck-2] == 0){
+                                isRedJumpAvailable = true
+                                let saveSpaces = [rowCheck,columnCheck]
+                                availableRedJumps.push(saveSpaces)
+                            }
+                        }
+                    }
+                    
+                } else if (boardArray[rowCheck+1][columnCheck+1] >= 1 || boardArray[rowCheck+1][columnCheck-1] >= 1 || boardArray[rowCheck-1][columnCheck+1] >= 1 ||  boardArray[rowCheck-1][columnCheck-1] >= 1){
                     if(boardArray[rowCheck+1][columnCheck+1] <= -1){
                         if(boardArray[rowCheck+2][columnCheck+2] == 0){
                             isRedJumpAvailable = true
@@ -473,21 +504,21 @@ const checkForRedJump = function(boardArray){
                             availableRedJumps.push(saveSpaces)
                         }
                       }
-                      if(boardArray[rowCheck+1][columnCheck-1] >= 1){
+                      if(boardArray[rowCheck+1][columnCheck-1] <= -1){
                         if(boardArray[rowCheck+2][columnCheck-2] == 0){
                             isRedJumpAvailable = true
                             let saveSpaces = [rowCheck,columnCheck]
                             availableRedJumps.push(saveSpaces)
                         }
                       }
-                      if(boardArray[rowCheck-1][columnCheck+1] >= 1){
+                      if(boardArray[rowCheck-1][columnCheck+1] <= -1){
                         if(boardArray[rowCheck-2][columnCheck+2] == 0){
                             isRedJumpAvailable = true
                             let saveSpaces = [rowCheck,columnCheck]
                             availableRedJumps.push(saveSpaces)
                         }
                       }
-                      if(boardArray[rowCheck-1][columnCheck-1] >= 1){
+                      if(boardArray[rowCheck-1][columnCheck-1] <= -1){
                         if(boardArray[rowCheck-2][columnCheck-2] == 0){
                             isRedJumpAvailable = true
                             let saveSpaces = [rowCheck,columnCheck]
