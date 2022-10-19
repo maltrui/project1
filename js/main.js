@@ -84,7 +84,6 @@ const changeTurn = function(currentPlayerTurn){
 }
 
 const moveRedPiecePart1 = function(event){
-    console.log(currentPlayerTurn + ' redFunction')
     if(changeTurn(currentPlayerTurn) == false){
         if (moveRedChipPart1 == true){
             selectedChipRow = parseInt(event.target.parentNode.id.slice(0,1))-1
@@ -100,7 +99,6 @@ const moveRedPiecePart1 = function(event){
                 moveRedChipPart2 = true
                 selectedChip = event.target
             }
-            console.log(isRedJumpAvailable + ' is redJumpAvailable')
             if(isRedJumpAvailable == true && checkIfChipIsInJumpArray(availableRedJumps, selectedChipRow, selectedChipColumn)){
                 redJumpPart2 = true
                 selectedChip = event.target
@@ -110,7 +108,6 @@ const moveRedPiecePart1 = function(event){
 
 }
 const moveBlackPiecePart1 = function(event){
-    console.log(currentPlayerTurn + ' blackFunction')
     if(changeTurn(currentPlayerTurn) == true){
         if (moveBlackChipPart1 == true){
             selectedChipRow = parseInt(event.target.parentNode.id.slice(0,1))-1
@@ -652,25 +649,19 @@ const makeBlackJumpHappen = function(event){
                             loggedJumpRow = parseInt(event.target.id.slice(0,1)) - 1
                             loggedJumpColumn = parseInt(event.target.id.slice(-1)) - 1
                         }
-                        
-                        
                     }
                     canBlackKingJumpAgain(loggedJumpRow, loggedJumpColumn)
                 }
-    
             }
             changeTurn(currentPlayerTurn)
             checkWin()
         }
-        
         makeAKing()  
         createChips(boardArray)
     }
-    
 }
 const makeRedJumpHappen = function(event){
     if(changeTurn(currentPlayerTurn) == false){
-        console.log('beginning of red jump')
         if (redJumpPart2 == true){
             movedToSpaceRow = parseInt(event.target.id.slice(0,1)) - 1
             movedToSpaceColumn = parseInt(event.target.id.slice(-1)) - 1
@@ -831,6 +822,7 @@ const canRedJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
             }
         } else if(boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] >= 1){
             if(boardArray[movedToSpaceRow-2][movedToSpaceColumn-2] == 0){
+                console.log('no way')
                 return
             }
         } else {
@@ -840,6 +832,11 @@ const canRedJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
             availableRedJumps.length = 0
             currentPlayerTurn = 'Black'
         }
+        spaceOpen = false
+        moveBlackChipPart1 = true
+        isRedJumpAvailable = false
+        availableRedJumps.length = 0
+        currentPlayerTurn = 'Black'
 
     }else{
         spaceOpen = false
