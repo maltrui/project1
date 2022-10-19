@@ -30,11 +30,11 @@ let loggedJumpColumn = ''
 
 const boardArray = [
     [0 , 1 , 0 , 1 , 0, 1 , 0 , 1 ],
-    [1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 ],
-    [0 ,1, 0 ,1, 0 ,2, 0 , 1 ],
-    [0, 0, 0 , 0, 0, 0, -1, 0 ],
+    [1 , 0 , 1 , 0 , 1 , 0 , 0 , 0 ],
+    [0 ,1, 0 ,1, 0 ,1, 0 , 1 ],
+    [0, 0, 0 , 0, 1, 0, 0, 0 ],
     [0, 0, 0 , 0 , 0, 0, 0, 0 ],
-    [-1 , 0 , 0 , 0 , -1 , 0, -1 , 0 ],
+    [-1 , 0 , -1 , 0 , -1 , 0, -1 , 0 ],
     [0 , 0 , 0 , -1 , 0, -1, 0, -1  ],
     [-1 , 0 , -1 , 0 , -1 , 0 , -1 , 0 ],
 ]
@@ -84,8 +84,11 @@ const moveRedPiecePart1 = function(event){
             selectedChipRow = parseInt(event.target.parentNode.id.slice(0,1))-1
             selectedChipColumn = parseInt(event.target.parentNode.id.slice(-1))-1
             checkForRedJump(boardArray)
-            if (event.target.classList.contains('redChip')){
+            if (event.target.classList.contains('nonRedKing')){
                 checkOpenSpaceNotKingRed(selectedChipRow, selectedChipColumn)
+            }
+            if (event.target.classList.contains('redKing')){
+                checkOpenSpaceKingRed(selectedChipRow, selectedChipColumn)
             }
             if (spaceOpen == true && isRedJumpAvailable == false){
                 moveRedChipPart2 = true
@@ -129,21 +132,32 @@ const moveRedPiecePart2 = function(event){
     if (moveRedChipPart2 == true && spaceOpen == true){
         movedToSpaceRow = parseInt(event.target.id.slice(0,1)) - 1
         movedToSpaceColumn = parseInt(event.target.id.slice(-1)) - 1
-        
-        if((selectedChipRow-1 == movedToSpaceRow && selectedChipColumn-1 == movedToSpaceColumn) || (selectedChipRow-1 == movedToSpaceRow && selectedChipColumn+1 == movedToSpaceColumn)){
-            boardArray[movedToSpaceRow].splice(movedToSpaceColumn,1 ,-1)
-            boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
-            createChips(boardArray)
-            spaceOpen = false
-            moveBlackChipPart1 = true
-            moveRedChipPart2 = false
-            currentPlayerTurn = 'black'
-        }  
+        if(selectedChip.classList.contains('nonRedKing')){
+            if((selectedChipRow-1 == movedToSpaceRow && selectedChipColumn-1 == movedToSpaceColumn) || (selectedChipRow-1 == movedToSpaceRow && selectedChipColumn+1 == movedToSpaceColumn)){
+                boardArray[movedToSpaceRow].splice(movedToSpaceColumn,1 ,-1)
+                boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
+                createChips(boardArray)
+                spaceOpen = false
+                moveBlackChipPart1 = true
+                moveRedChipPart2 = false
+                currentPlayerTurn = 'black'
+            }  
+        } else if(selectedChip.classList.contains('redKing')){
+            if((selectedChipRow+1 == movedToSpaceRow && selectedChipColumn-1 == movedToSpaceColumn) || (selectedChipRow+1 == movedToSpaceRow && selectedChipColumn+1 == movedToSpaceColumn) || (selectedChipRow-1 == movedToSpaceRow && selectedChipColumn-1 == movedToSpaceColumn) || (selectedChipRow-1 == movedToSpaceRow && selectedChipColumn+1 == movedToSpaceColumn)){
+                boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, -2)
+                boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
+                createChips(boardArray)
+                spaceOpen = false
+                moveBlackChipPart1 = true
+                moveRedChipPart2 = false
+                currentPlayerTurn = 'black'
+            }
+        }
+
     }
 }
 const moveBlackPiecePart2 = function(event){
     if (moveBlackChipPart2 == true && spaceOpen == true){
-        console.log('this is running')
         movedToSpaceRow = parseInt(event.target.id.slice(0,1)) - 1
         movedToSpaceColumn = parseInt(event.target.id.slice(-1)) - 1
         if(selectedChip.classList.contains('nonBlackKing')){
@@ -188,6 +202,11 @@ const checkOpenSpaceKingBlack = function(movedToSpaceRow, movedToSpaceColumn){
     }
 }
 
+const checkOpenSpaceKingRed = function(movedToSpaceRow, movedToSpaceColumn){
+    if(boardArray[movedToSpaceRow+1][movedToSpaceColumn-1] == 0 || boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] == 0 || boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] == 0 || [movedToSpaceRow-1][movedToSpaceColumn+1] == 0) {
+        spaceOpen = true
+    }
+}
 const checkForBlackJump = function(boardArray){
     let rowCheck = 0
     let columnCheck = 0
@@ -549,7 +568,6 @@ const makeBlackJumpHappen = function(event){
                         
                         
                     }
-                    console.log('is is running?')
                     canBlackKingJumpAgain(loggedJumpRow, loggedJumpColumn)
                 }
     
@@ -562,39 +580,87 @@ const makeBlackJumpHappen = function(event){
 }
 const makeRedJumpHappen = function(event){
     if(changeTurn(currentPlayerTurn) == false){
-
+        console.log('beginning of red jump')
         if (redJumpPart2 == true){
             movedToSpaceRow = parseInt(event.target.id.slice(0,1)) - 1
             movedToSpaceColumn = parseInt(event.target.id.slice(-1)) - 1
-            if((selectedChipRow-2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn) || (selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn)){
-                console.log()
-                if(boardArray[movedToSpaceRow][movedToSpaceColumn]== 0){
-                    if (selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn){
-                        boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, -1)
-                        boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
-                        boardArray[selectedChipRow-1].splice((selectedChipColumn-1), 1, 0)
-                        let newChip = document.createElement('div')
-                        newChip.classList.add('chip', 'blackChip', 'nonBlackKing')
-                        actualCapturedBlackChips.append(newChip)
-                        loggedJumpRow = parseInt(event.target.id.slice(0,1)) - 1
-                        loggedJumpColumn = parseInt(event.target.id.slice(-1)) - 1
-                    }
-                    if (selectedChipRow-2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn){
-                        boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, -1)
-                        boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
-                        boardArray[selectedChipRow-1].splice((selectedChipColumn+1), 1, 0)
-                        let newChip = document.createElement('div')
-                        newChip.classList.add('chip', 'blackChip', 'nonBlackKing')
-                        actualCapturedBlackChips.append(newChip)
-                        loggedJumpRow = parseInt(event.target.id.slice(0,1)) - 1
-                        loggedJumpColumn = parseInt(event.target.id.slice(-1)) - 1
-
-                    }
+            if(selectedChip.classList.contains('nonRedKing')){
+                if((selectedChipRow-2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn) || (selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn)){
+                    if(boardArray[movedToSpaceRow][movedToSpaceColumn]== 0){
+                        if (selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn && boardArray[selectedChipRow-1][selectedChipColumn-1] > 0){
+                            boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, -1)
+                            boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
+                            boardArray[selectedChipRow-1].splice((selectedChipColumn-1), 1, 0)
+                            let newChip = document.createElement('div')
+                            newChip.classList.add('chip', 'blackChip', 'nonBlackKing')
+                            actualCapturedBlackChips.append(newChip)
+                            loggedJumpRow = parseInt(event.target.id.slice(0,1)) - 1
+                            loggedJumpColumn = parseInt(event.target.id.slice(-1)) - 1
+                        }
+                        if (selectedChipRow-2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn && boardArray[selectedChipRow-1][selectedChipColumn+1] > 0){
+                            boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, -1)
+                            boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
+                            boardArray[selectedChipRow-1].splice((selectedChipColumn+1), 1, 0)
+                            let newChip = document.createElement('div')
+                            newChip.classList.add('chip', 'blackChip', 'nonBlackKing')
+                            actualCapturedBlackChips.append(newChip)
+                            loggedJumpRow = parseInt(event.target.id.slice(0,1)) - 1
+                            loggedJumpColumn = parseInt(event.target.id.slice(-1)) - 1
     
-    
+                        }
+        
+        
+                    }
+                    canRedJumpAgain(loggedJumpRow, loggedJumpColumn)
+                console.log('before main check')
                 }
-                canRedJumpAgain(loggedJumpRow, loggedJumpColumn)
+            } else if(selectedChip.classList.contains('redKing')){
+                console.log('after main check')
+                if((selectedChipRow+2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn) || (selectedChipRow+2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn) || (selectedChipRow-2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn) ||(selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn)){
+                    if(boardArray[movedToSpaceRow][movedToSpaceColumn]==0){
+                        if (selectedChipRow+2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn && boardArray[selectedChipRow+1][selectedChipColumn-1] > 0 ){
+                            boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, -2)
+                            boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
+                            boardArray[selectedChipRow+1].splice((selectedChipColumn-1), 1, 0)
+                            let newChip = document.createElement('div')
+                            newChip.classList.add('chip', 'blackChip', 'nonBlackKing')
+                            actualCapturedBlackChips.append(newChip)
+                            loggedJumpRow = parseInt(event.target.id.slice(0,1)) - 1
+                            loggedJumpColumn = parseInt(event.target.id.slice(-1)) - 1
+                        }else if(selectedChipRow+2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn && boardArray[selectedChipRow+1][selectedChipColumn+1] > 0){
+                            boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, -2)
+                            boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
+                            boardArray[selectedChipRow+1].splice((selectedChipColumn+1), 1, 0)
+                            let newChip = document.createElement('div')
+                            newChip.classList.add('chip', 'blackChip', 'nonBlackKing')
+                            actualCapturedBlackChips.append(newChip)
+                            loggedJumpRow = parseInt(event.target.id.slice(0,1)) - 1
+                            loggedJumpColumn = parseInt(event.target.id.slice(-1)) - 1
+                        } else if(selectedChipRow-2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn && boardArray[selectedChipRow-1][selectedChipColumn+1] > 0){
+                            boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, -2)
+                            boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
+                            boardArray[selectedChipRow-1].splice((selectedChipColumn+1), 1, 0)
+                            let newChip = document.createElement('div')
+                            newChip.classList.add('chip', 'blackChip', 'nonBlackKing')
+                            actualCapturedBlackChips.append(newChip)
+                            loggedJumpRow = parseInt(event.target.id.slice(0,1)) - 1
+                            loggedJumpColumn = parseInt(event.target.id.slice(-1)) - 1
+                        } else if(selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn && boardArray[selectedChipRow-1][selectedChipColumn+1] < 0){
+                            boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, -2)
+                            boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
+                            boardArray[selectedChipRow-1].splice((selectedChipColumn-1), 1, 0)
+                            let newChip = document.createElement('div')
+                            newChip.classList.add('chip', 'blackChip', 'nonBlackKing')
+                            actualCapturedBlackChips.append(newChip)
+                            loggedJumpRow = parseInt(event.target.id.slice(0,1)) - 1
+                            loggedJumpColumn = parseInt(event.target.id.slice(-1)) - 1
+                        }
+                    }
+                    console.log('getting to endof Red King Jump')
+                    canRedKingJumpAgain(loggedJumpRow, loggedJumpColumn)
+                }
             }
+
         }  
         createChips(boardArray)
     }
@@ -620,7 +686,6 @@ const canBlackJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
             }
         }else if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] <= -1){
             if(boardArray[movedToSpaceRow+2][movedToSpaceColumn+2] == 0){
-                console.log('5')
                 return
             }
         } else if(boardArray[movedToSpaceRow+1][movedToSpaceColumn-1] <= -1){
@@ -654,24 +719,24 @@ const canBlackJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
 const canRedJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
     if(movedToSpaceRow > 2){
         if(movedToSpaceColumn <= 2){
-            if(boardArray[movedToSpaceRow-1][movedToSpaceColumn+1] <= -1){
+            if(boardArray[movedToSpaceRow-1][movedToSpaceColumn+1] >= 1){
                 if(boardArray[movedToSpaceRow-2][movedToSpaceColumn+2] == 0){
                     return
                 }
             }
         }
         if(movedToSpaceColumn >= 6){
-            if(boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] <= -1){
+            if(boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] >= 1){
                 if(boardArray[movedToSpaceRow-2][movedToSpaceColumn-2] == 0){
                     return
                 }
             }
         }
-        if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] <= -1){
+        if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] >= 1){
             if(boardArray[movedToSpaceRow-2][movedToSpaceColumn+2] == 0){
                 return
             }
-        } else if(boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] <= -1){
+        } else if(boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] >= 1){
             if(boardArray[movedToSpaceRow-2][movedToSpaceColumn-2] == 0){
                 return
             }
@@ -694,7 +759,6 @@ const canRedJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
 } 
 const canBlackKingJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
     if(movedToSpaceRow<=2){
-        console.log('start')
         if(movedToSpaceColumn<=2){
             if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] <= -1){
                 if(boardArray[movedToSpace+2][movedToSpaceColumn+2] == 0){
@@ -725,7 +789,6 @@ const canBlackKingJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
             currentPlayerTurn = 'red'
     
     } else if(movedToSpaceRow >= 6){
-        console.log('are we here???')
         if(movedToSpaceColumn<=2){
             if(boardArray[movedToSpaceRow-1][movedToSpaceColumn+1] <= -1){
                 if(boardArray[movedToSpace-2][movedToSpaceColumn+2] == 0){
@@ -773,8 +836,8 @@ const canBlackKingJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
                 if(boardArray[movedToSpaceRow+2][movedToSpaceColumn-2]==0){
                     return
                 }
-            } else if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] <= -1){
-                if(boardArray[movedToSpaceRow+2][movedToSpaceColumn+2] == 0){
+            } else if(boardArray[movedToSpaceRow-1][movedToSpaceColumn+1] <= -1){
+                if(boardArray[movedToSpaceRow-2][movedToSpaceColumn+2] == 0){
                     return
                 }
             } else if(boardArray[movedToSpaceRow-1][movedToSpaceColumn-1]<=-1){
@@ -793,6 +856,108 @@ const canBlackKingJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
             isBlackJumpAvailable = false
             availableBlackJumps.length = 0
             currentPlayerTurn = 'red'
+        }
+    }
+}
+const canRedKingJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
+    if(movedToSpaceRow<=2){
+        console.log('start of again king jump')
+        if(movedToSpaceColumn<=2){
+            if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] >= 1){
+                if(boardArray[movedToSpace+2][movedToSpaceColumn+2] == 0){
+                    return
+                }
+            }
+        } else if (movedToSpaceColumn>=6){
+            if(boardArray[movedToSpaceRow+1][movedToSpaceColumn-1]>= 1){
+                if(boardArray[movedToSpaceRow+2][movedToSpaceColumn-2]==0){
+                    return
+                }
+            }
+        } else if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] >= -1 || boardArray[movedToSpaceRow+1][movedToSpaceColumn-1]>=1){
+            if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] <= -1){
+                if(boardArray[movedToSpace+2][movedToSpaceColumn+2] == 0){
+                    return
+                }
+            } else if(boardArray[movedToSpaceRow+1][movedToSpaceColumn-1]<=-1){
+                if(boardArray[movedToSpaceRow+2][movedToSpaceColumn-2]==0){
+                    return
+                }
+            }
+        } 
+            spaceOpen = false
+            moveBlackChipPart1 = true
+            isRedJumpAvailable = false
+            availableRedJumps.length = 0
+            currentPlayerTurn = 'black'
+    
+    } else if(movedToSpaceRow >= 6){
+        console.log('are we here???')
+        if(movedToSpaceColumn<=2){
+            if(boardArray[movedToSpaceRow-1][movedToSpaceColumn+1] >= 1){
+                if(boardArray[movedToSpace-2][movedToSpaceColumn+2] == 0){
+                    return
+                }
+            }
+        } else if (movedToSpaceColumn>=6){
+            if(boardArray[movedToSpaceRow-1][movedToSpaceColumn-1]>= 1){
+                if(boardArray[movedToSpaceRow-2][movedToSpaceColumn-2]==0){
+                    return
+                }
+            }
+        } else if(boardArray[movedToSpaceRow-1][movedToSpaceColumn+1] >= 1 || boardArray[movedToSpaceRow-1][movedToSpaceColumn-1]>= 1){
+            if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] <= -1){
+                if(boardArray[movedToSpace+2][movedToSpaceColumn+2] == 0){
+                    return
+                }
+            } else if(boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] >= 1){
+                if(boardArray[movedToSpaceRow-2][movedToSpaceColumn-2]==0){
+                    return
+                }
+            }
+            spaceOpen = false
+            moveBlackChipPart1 = true
+            isRedJumpAvailable = false
+            availableRedJumps.length = 0
+            currentPlayerTurn = 'black'
+        }
+        spaceOpen = false
+        moveBlackChipPart1 = true
+        isRedJumpAvailable = false
+        availableRedJumps.length = 0
+        currentPlayerTurn = 'black'
+        
+    } else {
+        if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] >= 1 || boardArray[movedToSpaceRow+1][movedToSpaceColumn-1] >=1 || boardArray[movedToSpaceRow-1][movedToSpaceColumn+1] >= 1 || boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] >= 1){
+            console.log('please be this')
+            if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] >= 1){
+                if(boardArray[movedToSpaceRow+2][movedToSpaceColumn+2] == 0){
+                    return
+                }
+            } else if(boardArray[movedToSpaceRow+1][movedToSpaceColumn-1] >= 1){
+                if(boardArray[movedToSpaceRow+2][movedToSpaceColumn-2]==0){
+                    return
+                }
+            } else if(boardArray[movedToSpaceRow-1][movedToSpaceColumn+1] >= 1){
+                if(boardArray[movedToSpaceRow-2][movedToSpaceColumn+2] == 0){
+                    return
+                }
+            } else if(boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] >= 1){
+                if(boardArray[movedToSpaceRow-2][movedToSpaceColumn-2]==0){
+                    return
+                }
+            } 
+            spaceOpen = false
+            moveBlackChipPart1 = true
+            isRedJumpAvailable = false
+            availableRedJumps.length = 0
+            currentPlayerTurn = 'black'
+        } else{
+            spaceOpen = false
+            moveBlackChipPart1 = true
+            isRedJumpAvailable = false
+            availableRedJumps.length = 0
+            currentPlayerTurn = 'black'
         }
     }
 }
