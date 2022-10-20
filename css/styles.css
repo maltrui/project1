@@ -147,3 +147,7 @@ button{
     grid-row: 5/6;
     grid-column: 2/3;
 }
+.selectedChip{
+    border-radius: 65px;
+    border-color: gold;
+}
