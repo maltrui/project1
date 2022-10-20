@@ -38,7 +38,7 @@ let boardArray = [
     [0 ,1, 0 ,1, 0 ,1, 0 , 1 ],
     [0, 0, 0 , 0, 0, 0, 0, 0 ],
     [0, 0, 0 , 0 , 0, 0, 0, 0 ],
-    [-1 , 0 , -1 , 0 , -1 , 0, -1 , 0 ],
+    [-1 , 0 , -2 , 0 , -1 , 0, -1 , 0 ],
     [0 , -1 , 0 , -1 , 0, -1, 0, -1  ],
     [-1 , 0 , -1 , 0 , -1 , 0 , -1 , 0 ],
 ]
@@ -58,8 +58,17 @@ const createChips = function(board){
                 newChip.classList.add('chip', 'blackChip', 'nonBlackKing')
                 tiles[placer].appendChild(newChip)
             }
+            if (blackTile == 1.5){
+                newChip.classList.add('chip', 'blackChip', 'nonBlackKing', 'selectedChip')
+                tiles[placer].appendChild(newChip)
+            }
             if (blackTile == 2){
                 newChip.classList.add('chip', 'blackChip', 'blackKing')
+                newChip.innerHTML = 'K'
+                tiles[placer].appendChild(newChip)
+            }
+            if (blackTile == 2.5){
+                newChip.classList.add('chip', 'blackChip', 'blackKing', 'selectedChip')
                 newChip.innerHTML = 'K'
                 tiles[placer].appendChild(newChip)
             }
@@ -67,8 +76,17 @@ const createChips = function(board){
                 newChip.classList.add('chip', 'redChip', 'nonRedKing')
                 tiles[placer].appendChild(newChip)
             }
+            if(blackTile == -1.5){
+                newChip.classList.add('chip', 'redChip', 'nonRedKing', 'selectedChip')
+                tiles[placer].appendChild(newChip)
+            }
             if(blackTile == -2){
                 newChip.classList.add('chip', 'redChip', 'redKing')
+                newChip.innerHTML = 'K'
+                tiles[placer].appendChild(newChip)
+            }
+            if(blackTile == -2.5){
+                newChip.classList.add('chip', 'redChip', 'redKing', 'selectedChip')
                 newChip.innerHTML = 'K'
                 tiles[placer].appendChild(newChip)
             }
@@ -90,9 +108,15 @@ const moveRedPiecePart1 = function(event){
             selectedChipColumn = parseInt(event.target.parentNode.id.slice(-1))-1
             checkForRedJump(boardArray)
             if (event.target.classList.contains('nonRedKing')){
+                boardArray[selectedChipRow].splice([selectedChipColumn], 1, -1.5)
+                createChips(boardArray)
+                boardArray[selectedChipRow].splice([selectedChipColumn], 1, -1)
                 checkOpenSpaceNotKingRed(selectedChipRow, selectedChipColumn)
             }
             if (event.target.classList.contains('redKing')){
+                boardArray[selectedChipRow].splice([selectedChipColumn], 1, -2.5)
+                createChips(boardArray)
+                boardArray[selectedChipRow].splice([selectedChipColumn], 1, -2)
                 checkOpenSpaceKing(selectedChipRow, selectedChipColumn)
             }
             if (spaceOpen == true && isRedJumpAvailable == false){
@@ -114,12 +138,17 @@ const moveBlackPiecePart1 = function(event){
             selectedChipColumn = parseInt(event.target.parentNode.id.slice(-1))-1
             checkForBlackJump(boardArray)
             if (event.target.classList.contains('nonBlackKing')){
+                boardArray[selectedChipRow].splice([selectedChipColumn], 1, 1.5)
+                createChips(boardArray)
+                boardArray[selectedChipRow].splice([selectedChipColumn], 1, 1)
                 checkOpenSpaceNotKingBlack(selectedChipRow, selectedChipColumn)
             }
             if (event.target.classList.contains('blackKing')){
+                boardArray[selectedChipRow].splice([selectedChipColumn], 1, 2.5)
+                createChips(boardArray)
+                boardArray[selectedChipRow].splice([selectedChipColumn], 1, 2)
                 checkOpenSpaceKing(selectedChipRow, selectedChipColumn)
             }
-
             if (spaceOpen == true && isBlackJumpAvailable == false){
                 moveBlackChipPart2 = true
                 selectedChip = event.target
@@ -175,6 +204,7 @@ const moveBlackPiecePart2 = function(event){
                 boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
                 makeAKing()
                 createChips(boardArray)
+                console.log(tiles)
                 spaceOpen = false
                 moveRedChipPart1 = true
                 moveBlackChipPart2 = false
@@ -219,7 +249,7 @@ const checkOpenSpaceKing = function(movedToSpaceRow, movedToSpaceColumn){
         } else if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] == 0 || boardArray[movedToSpaceRow+1][movedToSpaceColumn-1] == 0 ){
             spaceOpen = true
         }
-    } else if(movedToSpaceRow = 7){
+    } else if(movedToSpaceRow == 7){
         if(movedToSpaceColumn == 0){
             if(boardArray[movedToSpaceRow-1][movedToSpaceColumn+1] == 0){
                 spaceOpen = true
@@ -443,7 +473,7 @@ const checkForRedJump = function(boardArray){
                             }
                         }
                     }else if(boardArray[rowCheck-1][columnCheck+1] >= 1 || boardArray[rowCheck-1][columnCheck-1] == 1){
-                          if(boardArray[rowCheck-1][columnCheck+1] == 1){
+                          if(boardArray[rowCheck-1][columnCheck+1] >= 1){
                             if(boardArray[rowCheck-2][columnCheck+2] == 0){
                                 isRedJumpAvailable = true
                                 let saveSpaces = [rowCheck,columnCheck]
@@ -1158,6 +1188,13 @@ const checkWin = function(){
         moveRedChipPart2 = false
     }
 
+}
+const highlightChip = function(selectedChip){
+    boardArray.forEach(function(row){
+        row.forEach(function(blackTile){
+
+        })
+    })
 }
 
 const resetBoard = function(){
