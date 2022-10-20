@@ -1016,14 +1016,14 @@ const canRedKingJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
             availableRedJumps.length = 0
             currentPlayerTurn = 'Black'
     
-    } else if(movedToSpaceRow >= 6){
+    } else if(movedToSpaceRow > 6){
         if(movedToSpaceColumn<=2){
             if(boardArray[movedToSpaceRow-1][movedToSpaceColumn+1] >= 1){
                 if(boardArray[movedToSpace-2][movedToSpaceColumn+2] == 0){
                     return
                 }
             }
-        } else if (movedToSpaceColumn>=6){
+        } else if (movedToSpaceColumn>6){
             if(boardArray[movedToSpaceRow-1][movedToSpaceColumn-1]>= 1){
                 if(boardArray[movedToSpaceRow-2][movedToSpaceColumn-2]==0){
                     return
@@ -1054,23 +1054,31 @@ const canRedKingJumpAgain = function(movedToSpaceRow, movedToSpaceColumn){
         
     } else {
         if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] >= 1 || boardArray[movedToSpaceRow+1][movedToSpaceColumn-1] >=1 || boardArray[movedToSpaceRow-1][movedToSpaceColumn+1] >= 1 || boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] >= 1){
-            if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] >= 1){
-                if(boardArray[movedToSpaceRow+2][movedToSpaceColumn+2] == 0){
-                    return
-                }
-            } else if(boardArray[movedToSpaceRow+1][movedToSpaceColumn-1] >= 1){
-                if(boardArray[movedToSpaceRow+2][movedToSpaceColumn-2]==0){
-                    return
-                }
-            } else if(boardArray[movedToSpaceRow-1][movedToSpaceColumn+1] >= 1){
-                if(boardArray[movedToSpaceRow-2][movedToSpaceColumn+2] == 0){
-                    return
-                }
-            } else if(boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] >= 1){
-                if(boardArray[movedToSpaceRow-2][movedToSpaceColumn-2]==0){
-                    return
-                }
-            } 
+            if(movedToSpaceRow < 6){
+                if(boardArray[movedToSpaceRow+1][movedToSpaceColumn+1] >= 1){
+                    if(boardArray[movedToSpaceRow+2][movedToSpaceColumn+2] == 0){
+                        return
+                    }
+                } 
+                if(boardArray[movedToSpaceRow+1][movedToSpaceColumn-1] >= 1){
+                    if(boardArray[movedToSpaceRow+2][movedToSpaceColumn-2]==0){
+                        return
+                    }
+                } 
+            }
+            if(movedToSpaceRow>1){
+                if(boardArray[movedToSpaceRow-1][movedToSpaceColumn+1] >= 1){
+                    if(boardArray[movedToSpaceRow-2][movedToSpaceColumn+2] == 0){
+                        return
+                    }
+                } 
+                if(boardArray[movedToSpaceRow-1][movedToSpaceColumn-1] >= 1){
+                    if(boardArray[movedToSpaceRow-2][movedToSpaceColumn-2]==0){
+                        return
+                    }
+                } 
+            }
+
             spaceOpen = false
             moveBlackChipPart1 = true
             isRedJumpAvailable = false
