@@ -35,11 +35,11 @@ let loggedJumpColumn = ''
 let boardArray = [
     [0 , 1 , 0 , 1 , 0, 1 , 0 , 1 ],
     [1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 ],
-    [0 ,0, 0 ,0, 0 ,0, 0 , 1 ],
-    [0, 0, -1 , 0, -1, 0, 0, 0 ],
-    [0, 0, 0 , 2 , 0, 0, 0, 0 ],
+    [0 ,1, 0 ,1, 0 ,1, 0 , 1 ],
+    [0, 0, 0 , 0, 0, 0, 0, 0 ],
+    [0, 0, 0 , 0 , 0, 0, 0, 0 ],
     [-1 , 0 , -1 , 0 , -1 , 0, -1 , 0 ],
-    [0 , 0 , 0 , -1 , 0, 0, 0, -1  ],
+    [0 , -1 , 0 , -1 , 0, -1, 0, -1  ],
     [-1 , 0 , -1 , 0 , -1 , 0 , -1 , 0 ],
 ]
 const availableBlackJumps = []
@@ -128,7 +128,6 @@ const moveRedPiecePart1 = function(event){
                 moveRedChipPart2 = true
                 selectedChip = event.target
             }
-            console.log(isRedJumpAvailable + ' isRedJumpAvailable')
             if(isRedJumpAvailable == true && checkIfChipIsInJumpArray(availableRedJumps, selectedChipRow, selectedChipColumn)){
                 redJumpPart2 = true
                 selectedChip = event.target
@@ -148,7 +147,6 @@ const moveBlackPiecePart1 = function(event){
                 showOpenSpace()
                 boardArray[selectedChipRow].splice([selectedChipColumn], 1, 1)
                 checkOpenSpaceNotKingBlack(selectedChipRow, selectedChipColumn)
-                console.log(isBlackJumpAvailable + ' is blackJumpAvailable when it returns')
             }
             if (event.target.classList.contains('blackKing')){
                 boardArray[selectedChipRow].splice([selectedChipColumn], 1, 2.5)
@@ -161,7 +159,7 @@ const moveBlackPiecePart1 = function(event){
                 moveBlackChipPart2 = true
                 selectedChip = event.target
             }
-            console.log(isBlackJumpAvailable + ' is blackJumpAvailable')
+
             if (isBlackJumpAvailable == true && checkIfChipIsInJumpArray(availableBlackJumps, selectedChipRow, selectedChipColumn) == true ){
                 blackJumpPart2 = true
                 selectedChip = event.target
@@ -443,18 +441,15 @@ const checkForBlackJump = function(boardArray){
 }
 
 const checkForRedJump = function(boardArray){
-    console.log('start')
     let rowCheck = 0
     let columnCheck = 0
     boardArray.forEach(function(row){
         row.forEach(function(blackTile){
             if(blackTile == -1){
-                console.log('start')
                 if (rowCheck == 0 && rowCheck == 1){
                     
                 } else {
                     if (columnCheck == 0){
-                        console.log(' are we here')
                         if(boardArray[rowCheck-1][columnCheck+1] >= 1){
                             if(boardArray[rowCheck-2][columnCheck+2] == 0){
                                 isRedJumpAvailable = true
@@ -489,7 +484,6 @@ const checkForRedJump = function(boardArray){
                         }
                     }else if(boardArray[rowCheck-1][columnCheck+1] >= 1 || boardArray[rowCheck-1][columnCheck-1] >= 1){
                           if(boardArray[rowCheck-1][columnCheck+1] >= 1){
-                            console.log('second')
                             if(boardArray[rowCheck-2][columnCheck+2] == 0){
                                 isRedJumpAvailable = true
                                 let saveSpaces = [rowCheck,columnCheck]
@@ -576,28 +570,28 @@ const checkForRedJump = function(boardArray){
                     }
                     
                 } else if (boardArray[rowCheck+1][columnCheck+1] >= 1 || boardArray[rowCheck+1][columnCheck-1] >= 1 || boardArray[rowCheck-1][columnCheck+1] >= 1 ||  boardArray[rowCheck-1][columnCheck-1] >= 1){
-                    if(boardArray[rowCheck+1][columnCheck+1] <= -1){
+                    if(boardArray[rowCheck+1][columnCheck+1] >= 1){
                         if(boardArray[rowCheck+2][columnCheck+2] == 0){
                             isRedJumpAvailable = true
                             let saveSpaces = [rowCheck,columnCheck]
                             availableRedJumps.push(saveSpaces)
                         }
                       }
-                      if(boardArray[rowCheck+1][columnCheck-1] <= -1){
+                      if(boardArray[rowCheck+1][columnCheck-1] >= 1){
                         if(boardArray[rowCheck+2][columnCheck-2] == 0){
                             isRedJumpAvailable = true
                             let saveSpaces = [rowCheck,columnCheck]
                             availableRedJumps.push(saveSpaces)
                         }
                       }
-                      if(boardArray[rowCheck-1][columnCheck+1] <= -1){
+                      if(boardArray[rowCheck-1][columnCheck+1] >= 1){
                         if(boardArray[rowCheck-2][columnCheck+2] == 0){
                             isRedJumpAvailable = true
                             let saveSpaces = [rowCheck,columnCheck]
                             availableRedJumps.push(saveSpaces)
                         }
                       }
-                      if(boardArray[rowCheck-1][columnCheck-1] <= -1){
+                      if(boardArray[rowCheck-1][columnCheck-1] >= 1){
                         if(boardArray[rowCheck-2][columnCheck-2] == 0){
                             isRedJumpAvailable = true
                             let saveSpaces = [rowCheck,columnCheck]
@@ -772,7 +766,7 @@ const makeRedJumpHappen = function(event){
                             actualCapturedBlackChips.append(newChip)
                             loggedJumpRow = parseInt(event.target.id.slice(0,1)) - 1
                             loggedJumpColumn = parseInt(event.target.id.slice(-1)) - 1
-                        } else if(selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn && boardArray[selectedChipRow-1][selectedChipColumn+1] < 0){
+                        } else if(selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn && boardArray[selectedChipRow-1][selectedChipColumn+1] > 0){
                             boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, -2)
                             boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
                             boardArray[selectedChipRow-1].splice((selectedChipColumn-1), 1, 0)
@@ -1277,7 +1271,55 @@ const showOpenSpace = function(){
             columnCheck = 0
         })
     }
-    console.log(boardArray)
+rowCheck = 0
+columnCheck = 0
+    if(currentPlayerTurn=="Red"){
+        boardArray.forEach(function(row){
+            row.forEach(function(blackTile){
+                isRedJumpAvailable = false
+                checkForRedJump(boardArray)
+                if(blackTile == -1 || blackTile == -1.5){
+                    if(rowCheck != 0 && rowCheck != 1){
+                        if(boardArray[rowCheck-1][columnCheck+1] >= 1 && boardArray[rowCheck-2][columnCheck+2]== 0){
+                            boardArray[rowCheck-2].splice([columnCheck+2], 1, .5)
+                        }
+                        if(boardArray[rowCheck-1][columnCheck-1] >= 1 && boardArray[rowCheck-2][columnCheck-2]== 0){
+                            boardArray[rowCheck-2].splice([columnCheck-2], 1, .5)
+                        }
+                    }
+                }
+                if(blackTile == -2 || blackTile == -2.5){
+                    checkForRedJump(boardArray)
+                    if(isRedJumpAvailable == true){
+                        if(rowCheck != 6 && rowCheck != 7){
+                            if(boardArray[rowCheck+1][columnCheck+1] >= 1 && boardArray[rowCheck+2][columnCheck+2]== 0){
+                                boardArray[rowCheck+2].splice([columnCheck+2], 1, .5)
+                            }
+                            if(boardArray[rowCheck+1][columnCheck-1] >= 1 && boardArray[rowCheck+2][columnCheck-2]== 0){
+                                boardArray[rowCheck+2].splice([columnCheck-2], 1, .5)
+                            }
+                        }
+                        if(rowCheck !=0 & rowCheck != 1){
+                            if(columnCheck != 6 || columnCheck != 7){
+                                if(boardArray[rowCheck-1][columnCheck+1] >= 1 && boardArray[rowCheck-2][columnCheck+2]== 0){
+                                    boardArray[rowCheck-2].splice([columnCheck+2], 1, .5)
+                                }  
+                            }
+                            if(columnCheck != 0 || columnCheck !=1){
+                                if(boardArray[rowCheck-1][columnCheck-1] >= 1 && boardArray[rowCheck-2][columnCheck-2]== 0){
+                                    boardArray[rowCheck-2].splice([columnCheck-2], 1, .5)
+                                }
+                            }
+                        }
+
+                    }
+                }
+                columnCheck = columnCheck + 1
+            })
+            rowCheck = rowCheck + 1
+            columnCheck = 0
+        })
+    }
     createChips(boardArray)
     rowCheck = 0
     columnCheck = 0
