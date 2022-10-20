@@ -15,6 +15,9 @@ All pieces can capture an opponet's piece if there is an open space behind the p
 A piece can chain captures together (Chain Jump)
 If a piece can capture an opponet's piece, it MUST capture it, no other normally move
 
+Click on a piece to select it, and then a tile to move it!
+Remeber, if you can caputre a piece, you have to!
+
 # Technologys Used:
 - CSS
 - HTML
@@ -22,7 +25,7 @@ If a piece can capture an opponet's piece, it MUST capture it, no other normally
 
 # WireFrame
 ![Checkerboard Wireframe](/img/wireframe.png)
-
+![Checkerboard Wireframe](/img/In-BrowserApplication.png)
 # Key Features
 Squares are red and black
 Pieces are red and black
@@ -31,9 +34,12 @@ How many wins for Light Player and Dark Player
 How many pieces have been captured
 Button for reset
 Who's turn is (Red or Black)
-Winner announcement
+Winner announcement:
     - Win by taking all opponent's pieces
     - Win by opponent having no legal moves
 
-
+# IceBox
+- Instead of a "K" to represent a King, have a crown on the chip
+- choose your chip colors
+- change board theme/colors
 
