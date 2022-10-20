@@ -151,3 +151,16 @@ button{
     border-radius: 65px;
     border-color: gold;
 }
+.jumpHere{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    border-radius: 50px;
+    margin-left: 4px;
+    margin-top: 2px;
+    border-style: dashed;
+    border-width: 1px;
+    border-color: navajowhite;
+    width: 30px;
+    height: 30px;
+}
