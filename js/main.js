@@ -14,7 +14,7 @@ let isBlackJumpAvailable = false
 let isRedJumpAvailable = false
 let blackJumpPart2 = false
 let redJumpPart2 = false
-
+let endGame = false
 
 let currentPlayerTurn = 'Black'
 document.getElementById('playerTurn').innerText = currentPlayerTurn
@@ -36,9 +36,9 @@ let boardArray = [
     [0 , 1 , 0 , 1 , 0, 1 , 0 , 1 ],
     [1 , 0 , 1 , 0 , 1 , 0 , 1 , 0 ],
     [0 ,1, 0 ,1, 0 ,1, 0 , 1 ],
-    [0, 0, 0 , 0, 0, 0, 0, 0 ],
+    [0, 0, 0 , 0, 1, 0, 0, 0 ],
     [0, 0, 0 , 0 , 0, 0, 0, 0 ],
-    [-1 , 0 , -1 , 0 , -1 , 0, -1 , 0 ],
+    [-1 , 0 , -1 , 0 , -2 , 0, -1 , 0 ],
     [0 , -1 , 0 , -1 , 0, -1, 0, -1  ],
     [-1 , 0 , -1 , 0 , -1 , 0 , -1 , 0 ],
 ]
@@ -651,7 +651,6 @@ const makeBlackJumpHappen = function(chip){
             } else if(selectedChip.classList.contains('blackKing')){
                 if((selectedChipRow+2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn) || (selectedChipRow+2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn) || (selectedChipRow-2 == movedToSpaceRow && selectedChipColumn+2 == movedToSpaceColumn) ||(selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn)){
                     if(boardArray[movedToSpaceRow][movedToSpaceColumn]== 0){
-
                         if (selectedChipRow+2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn && boardArray[selectedChipRow+1][selectedChipColumn-1] < 0 ){
                             boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, 2)
                             boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
@@ -679,7 +678,7 @@ const makeBlackJumpHappen = function(chip){
                             actualCapturedRedChips.append(newChip)
                             loggedJumpRow = parseInt(chip.id.slice(0,1)) - 1
                             loggedJumpColumn = parseInt(chip.id.slice(-1)) - 1
-                        }else if(selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn && boardArray[selectedChipRow-1][selectedChipColumn+1] < 0){
+                        }else if(selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn && boardArray[selectedChipRow-1][selectedChipColumn-1] < 0){
                             boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, 2)
                             boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
                             boardArray[selectedChipRow-1].splice((selectedChipColumn-1), 1, 0)
@@ -766,7 +765,7 @@ const makeRedJumpHappen = function(chip){
                             actualCapturedBlackChips.append(newChip)
                             loggedJumpRow = parseInt(chip.id.slice(0,1)) - 1
                             loggedJumpColumn = parseInt(chip.id.slice(-1)) - 1
-                        } else if(selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn && boardArray[selectedChipRow-1][selectedChipColumn+1] > 0){
+                        } else if(selectedChipRow-2 == movedToSpaceRow && selectedChipColumn-2 == movedToSpaceColumn && boardArray[selectedChipRow-1][selectedChipColumn-1] > 0){
                             boardArray[movedToSpaceRow].splice(movedToSpaceColumn, 1, -2)
                             boardArray[selectedChipRow].splice(selectedChipColumn, 1, 0)
                             boardArray[selectedChipRow-1].splice((selectedChipColumn-1), 1, 0)
@@ -1177,47 +1176,53 @@ const checkWin = function(){
     if (numOfRedChips == numOfRedChipsThatCantMove && numOfRedChips != 0){
         cantRedMove = true
     }
-    if (didBlackWin == true){
-        numOfBlackWins = numOfBlackWins + 1
-        document.getElementById('numOfBlackWins').innerText = numOfBlackWins
-        moveBlackChipPart1 = false
-        moveBlackChipPart2 = false
-        moveRedChipPart1 = false
-        moveRedChipPart2 = false
-        document.getElementById('endGameState').innerText = 'Black Wins! Press Resart to play again!'
+    if(endGame == false){
+        if (didBlackWin == true){
+            numOfBlackWins = numOfBlackWins + 1
+            document.getElementById('numOfBlackWins').innerText = numOfBlackWins
+            moveBlackChipPart1 = false
+            moveBlackChipPart2 = false
+            moveRedChipPart1 = false
+            moveRedChipPart2 = false
+            endGame = true
+            document.getElementById('endGameState').innerText = 'Black Wins! Press Resart to play again!'
+        }
+        if (didRedWin == true){
+            numOfRedWins = numOfRedWins + 1
+            document.getElementById('numOfRedWins').innerText = numOfRedWins
+            document.getElementById('endGameState').innerText = 'Red Wins! Press Resart to play again!'
+            moveBlackChipPart1 = false
+            moveBlackChipPart2 = false
+            moveRedChipPart1 = false
+            moveRedChipPart2 = false
+            endGame = true
+    
+        }
+        if (cantBlackMove == true){
+            numOfRedWins = numOfRedWins + 1
+            document.getElementById('numOfRedWins').innerText = numOfRedWins
+            document.getElementById('endGameState').innerText = 'Black has no more moves! Red Wins! Press Reset to play again!'
+            moveBlackChipPart1 = false
+            moveBlackChipPart2 = false
+            moveRedChipPart1 = false
+            moveRedChipPart2 = false
+            endGame = true
+    
+        }
+        if (cantRedMove == true){
+            numOfBlackWins = numOfBlackWins + 1
+            document.getElementById('numOfBlackWins').innerText = numOfBlackWins
+            document.getElementById('endGameState').innerText = 'Red has no more moves! Black Wins! Press Reset to play again!'
+            moveBlackChipPart1 = false
+            moveBlackChipPart2 = false
+            moveRedChipPart1 = false
+            moveRedChipPart2 = false
+            endGame = true
+        }
+    
     }
-    if (didRedWin == true){
-        numOfRedWins = numOfRedWins + 1
-        document.getElementById('numOfRedWins').innerText = numOfRedWins
-        document.getElementById('endGameState').innerText = 'Red Wins! Press Resart to play again!'
-        moveBlackChipPart1 = false
-        moveBlackChipPart2 = false
-        moveRedChipPart1 = false
-        moveRedChipPart2 = false
-
-    }
-    if (cantBlackMove == true){
-        numOfRedWins = numOfRedWins + 1
-        document.getElementById('numOfRedWins').innerText = numOfRedWins
-        document.getElementById('endGameState').innerText = 'Black has no more moves! Red Wins! Press Reset to play again!'
-        moveBlackChipPart1 = false
-        moveBlackChipPart2 = false
-        moveRedChipPart1 = false
-        moveRedChipPart2 = false
-
-    }
-    if (cantRedMove == true){
-        numOfBlackWins = numOfBlackWins + 1
-        document.getElementById('numOfBlackWins').innerText = numOfBlackWins
-        document.getElementById('endGameState').innerText = 'Red has no more moves! Black Wins! Press Reset to play again!'
-        moveBlackChipPart1 = false
-        moveBlackChipPart2 = false
-        moveRedChipPart1 = false
-        moveRedChipPart2 = false
-    }
-
+    
 }
-// ADD TO EVERY JUMP
 const showOpenSpace = function(){
     let rowCheck = 0
     let columnCheck = 0
@@ -1362,6 +1367,7 @@ isRedJumpAvailable = false
 blackJumpPart2 = false
 redJumpPart2 = false
 currentPlayerTurn = 'Black'
+endGame = false
 document.getElementById('endGameState').innerText = ''
 createChips(boardArray)
 }
