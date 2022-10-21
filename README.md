@@ -1,5 +1,5 @@
 # Checkers
-
+https://maltrui.github.io/project1/
 # Background
 
 Game Choice: Checkers
@@ -39,6 +39,7 @@ Winner announcement:
     - Win by opponent having no legal moves
 
 # IceBox
+- An actual Start Screen
 - Instead of a "K" to represent a King, have a crown on the chip
 - choose your chip colors
 - change board theme/colors
