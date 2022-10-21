@@ -27,14 +27,13 @@ Remeber, if you can caputre a piece, you have to!
 ![Checkerboard Wireframe](/img/wireframe.png)
 ![Checkerboard Wireframe](/img/In-BrowserApplication.png)
 # Key Features
-Squares are red and black
-Pieces are red and black
-
-How many wins for Light Player and Dark Player
-How many pieces have been captured
-Button for reset
-Who's turn is (Red or Black)
-Winner announcement:
+- Squares are red and black
+- Pieces are red and black
+- How many wins for Light Player and Dark Player
+- How many pieces have been captured
+- Button for reset
+- Who's turn is (Red or Black)
+- Winner announcement:
     - Win by taking all opponent's pieces
     - Win by opponent having no legal moves
 
